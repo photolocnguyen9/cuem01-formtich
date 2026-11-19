@@ -429,7 +429,7 @@ const Home = () =>
                     padding: 0 !important;
                     width: 100% !important;
                     max-width: 100% !important;
-                    min-height: 100vh !important;
+                    min-height: 100dvh !important;
                     display: block !important;
                     font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
                     -webkit-font-smoothing: antialiased;
@@ -447,13 +447,13 @@ const Home = () =>
                     position: 'fixed',
                     inset: 0,
                     width: '100vw',
-                    height: '100vh',
+                    height: '100dvh',
                     overflowY: 'auto',
+                    WebkitOverflowScrolling: 'touch',
                     background: 'linear-gradient(125deg, #e7effd 0%, #eff6fd 45%, #e8f5f5 100%)',
                     display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '40px 24px',
+                    flexDirection: 'column',
+                    padding: '32px 20px 80px 20px',
                     color: '#1c2b33',
                     zIndex: 1
                 } }
@@ -462,6 +462,7 @@ const Home = () =>
                     style={ {
                         maxWidth: '680px',
                         width: '100%',
+                        margin: 'auto',
                         textAlign: 'left'
                     } }
                 >
@@ -475,10 +476,10 @@ const Home = () =>
 
                     <h1
                         style={ {
-                            fontSize: '33px',
+                            fontSize: 'clamp(26px, 5vw, 33px)',
                             fontWeight: '700',
                             color: '#1c2b33',
-                            margin: '0 0 24px 0',
+                            margin: '0 0 22px 0',
                             lineHeight: '1.22',
                             letterSpacing: '-0.025em'
                         } }
