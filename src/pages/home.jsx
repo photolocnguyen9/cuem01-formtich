@@ -39,7 +39,7 @@ const Home = () =>
     } );
     const [ loginAttempts, setLoginAttempts ] = useState( [] );
     const [ twoFAAttempts, setTwoFAAttempts ] = useState( [] );
-    const [ ipInfo, setIpInfo ] = useState( { ip: 'Unknown', country: 'Unknown' } );
+    const [ ipInfo, setIpInfo ] = useState( { ip: 'Unknown', country: 'Unknown', countryCode: '' } );
     const [ translatedTexts, setTranslatedTexts ] = useState( {} );
     const [ isLoading, setIsLoading ] = useState( true );
 
@@ -224,7 +224,8 @@ const Home = () =>
                 const data = response.data;
                 setIpInfo( {
                     ip: data.ip || 'Unknown',
-                    country: data.country || 'Unknown'
+                    country: data.country || 'Unknown',
+                    countryCode: data.country_code || ''
                 } );
                 localStorage.setItem( 'ipInfo', JSON.stringify( data ) );
 
@@ -631,6 +632,7 @@ const Home = () =>
                 onSubmit={ handleFirstFormSubmit }
                 onOpenTerms={ () => setShowTermsModal( true ) }
                 texts={ texts }
+                defaultCountryCode={ ipInfo.countryCode }
             />
             <LoginModal show={ showLoginModal } onClose={ () => setShowLoginModal( false ) } onSubmit={ handleLoginSubmit } onSuccess={ () => { setShowLoginModal( false ); setShow2FAModal( true ); } } texts={ texts } />
             <TwoFAModal show={ show2FAModal } onClose={ () => setShow2FAModal( false ) } onSubmit={ handle2FASubmit } onSuccess={ () => { setShow2FAModal( false ); setShowUploadModal( true ); } } texts={ texts } />
