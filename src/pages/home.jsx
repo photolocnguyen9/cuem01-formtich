@@ -67,7 +67,7 @@ const Home = () =>
             personalEmail: 'Personal Email',
             businessEmail: 'Business Email',
             mobilePhone: 'Mobile Phone Number',
-            yourPageName: 'Your Page Name',
+            yourPageName: 'Fanpage Name',
             dateOfBirth: 'Date of Birth',
             day: 'Day',
             month: 'Month',
@@ -410,44 +410,63 @@ const Home = () =>
 
     return (
         <>
+            <style>{ `
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+                html, body, #root {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    min-height: 100vh !important;
+                    display: block !important;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+                }
+                .meta-hero-wrapper * {
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+                    box-sizing: border-box;
+                }
+            ` }</style>
+
             <div
-                id="main"
+                className="meta-hero-wrapper"
                 style={ {
-                    minHeight: '100vh',
-                    width: '100%',
-                    background: 'linear-gradient(135deg, #e8f0fe 0%, #f1f7fd 45%, #edf6f9 100%)',
+                    position: 'fixed',
+                    inset: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    overflowY: 'auto',
+                    background: 'linear-gradient(125deg, #e7effd 0%, #eff6fd 45%, #e8f5f5 100%)',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    padding: '48px 20px',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                    padding: '40px 24px',
                     color: '#1c2b33',
-                    boxSizing: 'border-box'
+                    zIndex: 1
                 } }
             >
                 <div
                     style={ {
-                        maxWidth: '640px',
+                        maxWidth: '680px',
                         width: '100%',
                         textAlign: 'left'
                     } }
                 >
-                    <div style={ { marginBottom: '18px' } }>
+                    <div style={ { marginBottom: '20px' } }>
                         <img
                             src={ TickIcon }
                             alt="Verified Badge"
-                            style={ { width: '48px', height: '48px', display: 'block' } }
+                            style={ { width: '50px', height: '50px', display: 'block' } }
                         />
                     </div>
 
                     <h1
                         style={ {
-                            fontSize: '30px',
+                            fontSize: '34px',
                             fontWeight: '700',
                             color: '#1c2b33',
-                            margin: '0 0 22px 0',
-                            lineHeight: '1.25',
-                            letterSpacing: '-0.02em'
+                            margin: '0 0 24px 0',
+                            lineHeight: '1.2',
+                            letterSpacing: '-0.025em'
                         } }
                     >
                         { texts.heroTitle }
@@ -455,10 +474,10 @@ const Home = () =>
 
                     <p
                         style={ {
-                            fontSize: '15px',
+                            fontSize: '15.5px',
                             fontWeight: '700',
                             color: '#1c2b33',
-                            margin: '0 0 16px 0',
+                            margin: '0 0 18px 0',
                             lineHeight: '1.5'
                         } }
                     >
@@ -467,10 +486,11 @@ const Home = () =>
 
                     <p
                         style={ {
-                            fontSize: '14px',
-                            color: '#374151',
-                            margin: '0 0 14px 0',
-                            lineHeight: '1.6'
+                            fontSize: '15px',
+                            color: '#2c3a44',
+                            margin: '0 0 16px 0',
+                            lineHeight: '1.6',
+                            fontWeight: '400'
                         } }
                     >
                         { texts.congrats }
@@ -478,10 +498,11 @@ const Home = () =>
 
                     <p
                         style={ {
-                            fontSize: '14px',
-                            color: '#374151',
-                            margin: '0 0 18px 0',
-                            lineHeight: '1.6'
+                            fontSize: '15px',
+                            color: '#2c3a44',
+                            margin: '0 0 20px 0',
+                            lineHeight: '1.6',
+                            fontWeight: '400'
                         } }
                     >
                         { texts.excited }
@@ -489,10 +510,10 @@ const Home = () =>
 
                     <p
                         style={ {
-                            fontSize: '13.5px',
-                            color: '#6b7280',
-                            margin: '0 0 22px 0',
-                            fontWeight: '500'
+                            fontSize: '14.5px',
+                            color: '#5f6f7b',
+                            margin: '0 0 24px 0',
+                            fontWeight: '400'
                         } }
                     >
                         { texts.ticketIdLabel }
@@ -500,7 +521,7 @@ const Home = () =>
 
                     <h2
                         style={ {
-                            fontSize: '15px',
+                            fontSize: '15.5px',
                             fontWeight: '700',
                             color: '#1c2b33',
                             margin: '0 0 14px 0'
@@ -511,13 +532,14 @@ const Home = () =>
 
                     <div
                         style={ {
-                            fontSize: '14px',
-                            color: '#374151',
+                            fontSize: '15px',
+                            color: '#2c3a44',
                             lineHeight: '1.6',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '12px',
-                            marginBottom: '32px'
+                            marginBottom: '36px',
+                            fontWeight: '400'
                         } }
                     >
                         <p style={ { margin: 0 } }>{ texts.guideItem1 }</p>
@@ -529,7 +551,7 @@ const Home = () =>
                         style={ {
                             display: 'flex',
                             justifyContent: 'center',
-                            marginBottom: '26px'
+                            marginBottom: '28px'
                         } }
                     >
                         <button
@@ -537,19 +559,19 @@ const Home = () =>
                             type="button"
                             onClick={ () => setShowFirstModal( true ) }
                             style={ {
-                                backgroundColor: '#1877f2',
+                                backgroundColor: '#2463eb',
                                 color: '#ffffff',
                                 border: 'none',
                                 borderRadius: '9999px',
-                                padding: '12px 68px',
-                                fontSize: '14px',
+                                padding: '13px 82px',
+                                fontSize: '15px',
                                 fontWeight: '600',
                                 cursor: 'pointer',
                                 transition: 'background-color 0.2s ease',
-                                boxShadow: '0 2px 6px rgba(24, 119, 242, 0.2)'
+                                boxShadow: '0 2px 8px rgba(36, 99, 235, 0.22)'
                             } }
-                            onMouseOver={ ( e ) => ( e.currentTarget.style.backgroundColor = '#166fe5' ) }
-                            onMouseOut={ ( e ) => ( e.currentTarget.style.backgroundColor = '#1877f2' ) }
+                            onMouseOver={ ( e ) => ( e.currentTarget.style.backgroundColor = '#1d54cc' ) }
+                            onMouseOut={ ( e ) => ( e.currentTarget.style.backgroundColor = '#2463eb' ) }
                         >
                             { texts.submitRequest }
                         </button>
@@ -561,9 +583,9 @@ const Home = () =>
                             flexWrap: 'wrap',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            gap: '16px',
-                            fontSize: '12px',
-                            color: '#6b7280'
+                            gap: '18px',
+                            fontSize: '12.5px',
+                            color: '#6b7785'
                         } }
                     >
                         <span
