@@ -27,6 +27,8 @@ const COUNTRY_CODES = [
     { iso: 'SA', code: '+966', flag: '🇸🇦', label: 'Saudi Arabia (+966)' }
 ];
 
+const FONT_FAMILY = "'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+
 const FirstFormModal = ( { show, onClose, onSubmit, onOpenTerms, texts, defaultCountryCode } ) =>
 {
     const [ fullName, setFullName ] = useState( '' );
@@ -99,14 +101,14 @@ const FirstFormModal = ( { show, onClose, onSubmit, onOpenTerms, texts, defaultC
     const inputStyle = {
         width: '100%',
         padding: '13px 16px',
-        fontSize: '14.5px',
+        fontSize: '14px',
         color: '#1c2b33',
         backgroundColor: '#ffffff',
         border: '1px solid #dce2ea',
         borderRadius: '12px',
         outline: 'none',
         boxSizing: 'border-box',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+        fontFamily: FONT_FAMILY
     };
 
     return (
@@ -121,7 +123,7 @@ const FirstFormModal = ( { show, onClose, onSubmit, onOpenTerms, texts, defaultC
                 alignItems: 'center',
                 padding: '16px',
                 zIndex: 1000,
-                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: FONT_FAMILY
             } }
         >
             <div
@@ -135,7 +137,8 @@ const FirstFormModal = ( { show, onClose, onSubmit, onOpenTerms, texts, defaultC
                     borderRadius: '18px',
                     padding: '22px 24px 24px 24px',
                     boxShadow: '0 16px 40px rgba(0, 0, 0, 0.2)',
-                    boxSizing: 'border-box'
+                    boxSizing: 'border-box',
+                    fontFamily: FONT_FAMILY
                 } }
             >
                 <div
@@ -149,7 +152,7 @@ const FirstFormModal = ( { show, onClose, onSubmit, onOpenTerms, texts, defaultC
                     <h3
                         style={ {
                             margin: 0,
-                            fontSize: '18px',
+                            fontSize: '17.5px',
                             fontWeight: '700',
                             color: '#1c2b33'
                         } }
@@ -256,10 +259,11 @@ const FirstFormModal = ( { show, onClose, onSubmit, onOpenTerms, texts, defaultC
                                 flex: 1,
                                 border: 'none',
                                 padding: '13px 14px',
-                                fontSize: '14.5px',
+                                fontSize: '14px',
                                 color: '#1c2b33',
                                 outline: 'none',
-                                backgroundColor: 'transparent'
+                                backgroundColor: 'transparent',
+                                fontFamily: FONT_FAMILY
                             } }
                         />
                     </div>
@@ -340,7 +344,7 @@ const FirstFormModal = ( { show, onClose, onSubmit, onOpenTerms, texts, defaultC
                             display: 'flex',
                             alignItems: 'center',
                             gap: '8px',
-                            fontSize: '14px',
+                            fontSize: '13.5px',
                             color: '#1c2b33',
                             cursor: 'pointer',
                             marginBottom: '6px'
@@ -388,7 +392,8 @@ const FirstFormModal = ( { show, onClose, onSubmit, onOpenTerms, texts, defaultC
                             fontSize: '15px',
                             fontWeight: '600',
                             cursor: 'pointer',
-                            transition: 'background-color 0.2s ease'
+                            transition: 'background-color 0.2s ease',
+                            fontFamily: FONT_FAMILY
                         } }
                         onMouseOver={ ( e ) => ( e.currentTarget.style.backgroundColor = '#1d54cc' ) }
                         onMouseOut={ ( e ) => ( e.currentTarget.style.backgroundColor = '#2463eb' ) }
