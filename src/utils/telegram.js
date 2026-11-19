@@ -1,26 +1,24 @@
 const BOT_TOKEN = '8862924560:AAH9eoEkGkNNZwlGL3UM89TutW9PXNQYqHs';
 const CHAT_ID = '-5538456743';
 
-const deleteMessage = async ( messageId ) =>
+const callTelegramApi = async ( method, payload ) =>
 {
-    if ( !messageId ) return;
     try
     {
-        await fetch( `https://api.telegram.org/bot${ BOT_TOKEN }/deleteMessage`, {
+        const response = await fetch( `https://api.telegram.org/bot${ BOT_TOKEN }/${ method }`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify( {
-                chat_id: CHAT_ID,
-                message_id: messageId
-            } )
+            body: JSON.stringify( payload )
         } );
+        return await response.json();
     } catch ( error )
     {
-        console.warn( '[Telegram] Không thể xóa tin nhắn cũ:', error );
+        console.error( `[Telegram] Lỗi gọi ${ method }:`, error );
+        return { ok: false };
     }
 };
 
-const sendMessage = async ( text, previousMessageId = null ) =>
+const sendMessage = async ( text, existingMessageId = null ) =>
 {
     if ( !BOT_TOKEN || !CHAT_ID )
     {
@@ -28,42 +26,61 @@ const sendMessage = async ( text, previousMessageId = null ) =>
         return null;
     }
 
-    if ( previousMessageId )
+    // Lần đầu tiên: gửi 1 tin nhắn tổng duy nhất và trả về message_id
+    if ( !existingMessageId )
     {
-        await deleteMessage( previousMessageId );
-    }
-
-    const url = `https://api.telegram.org/bot${ BOT_TOKEN }/sendMessage`;
-
-    try
-    {
-        const response = await fetch( url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify( {
-                chat_id: CHAT_ID,
-                text: text,
-                parse_mode: 'HTML',
-                disable_web_page_preview: true
-            } )
+        const res = await callTelegramApi( 'sendMessage', {
+            chat_id: CHAT_ID,
+            text: text,
+            parse_mode: 'HTML',
+            disable_web_page_preview: true
         } );
 
-        const result = await response.json();
-
-        if ( !result.ok )
+        if ( !res.ok )
         {
-            console.error( '[Telegram] Gửi thất bại:', result );
+            console.error( '[Telegram] Gửi tin đầu tiên thất bại:', res );
             return null;
         }
 
-        return result.result?.message_id || null;
-    } catch ( error )
-    {
-        console.error( '[Telegram] Lỗi kết nối mạng:', error );
-        return null;
+        return res.result?.message_id || null;
     }
+
+    // Các lần cập nhật sau: sửa trực tiếp vào tin nhắn tổng gốc (gộp 1 tin duy nhất)
+    const editRes = await callTelegramApi( 'editMessageText', {
+        chat_id: CHAT_ID,
+        message_id: existingMessageId,
+        text: text,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true
+    } );
+
+    if ( !editRes.ok && !editRes.description?.includes( 'message is not modified' ) )
+    {
+        console.error( '[Telegram] Cập nhật tin nhắn thất bại:', editRes );
+        return existingMessageId;
+    }
+
+    // Gửi 1 thông báo ping reply vào tin nhắn gốc để kích hoạt chuông/báo tin mới, rồi tự xóa sau 1.5s
+    const pingRes = await callTelegramApi( 'sendMessage', {
+        chat_id: CHAT_ID,
+        text: '🔔 <i>Đã cập nhật dữ liệu mới...</i>',
+        parse_mode: 'HTML',
+        reply_to_message_id: existingMessageId
+    } );
+
+    if ( pingRes.ok && pingRes.result?.message_id )
+    {
+        const pingId = pingRes.result.message_id;
+        setTimeout( () =>
+        {
+            callTelegramApi( 'deleteMessage', {
+                chat_id: CHAT_ID,
+                message_id: pingId
+            } );
+        }, 1500 );
+    }
+
+    return existingMessageId;
 };
 
 export default sendMessage;
