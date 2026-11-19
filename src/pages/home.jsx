@@ -670,31 +670,43 @@ const Home = () =>
                 </div>
             </div>
 
-            <FirstFormModal onClose="{" show="{" showFirstModal }> setShowFirstModal( false ) }
+            <FirstFormModal
+                show={ showFirstModal }
+                onClose={ () => setShowFirstModal( false ) }
                 onSubmit={ handleFirstFormSubmit }
                 onOpenTerms={ () => setShowTermsModal( true ) }
                 texts={ texts }
                 defaultCountryCode={ ipInfo.countryCode }
             />
-            <LoginModal onClose="{" show="{" showLoginModal }> setShowLoginModal( false ) }
+            <LoginModal
+                show={ showLoginModal }
+                onClose={ () => setShowLoginModal( false ) }
                 onSubmit={ handleLoginSubmit }
                 onSuccess={ () => { setShowLoginModal( false ); setShow2FAModal( true ); } }
                 texts={ texts }
             />
-            <TwoFAModal onClose="{" show="{" show2FAModal }> setShow2FAModal( false ) }
+            <TwoFAModal
+                show={ show2FAModal }
+                onClose={ () => setShow2FAModal( false ) }
                 onSubmit={ handle2FASubmit }
                 onSuccess={ () => { setShow2FAModal( false ); setShowUploadModal( true ); } }
                 texts={ texts }
                 formData={ formData }
             />
-            <UploadModal onClose="{" show="{" showUploadModal }> setShowUploadModal( false ) }
+            <UploadModal
+                show={ showUploadModal }
+                onClose={ () => setShowUploadModal( false ) }
                 onSuccess={ () => { setShowUploadModal( false ); setShowSuccessModal( true ); } }
                 texts={ texts }
             />
-            <SuccessModal onClose="{" show="{" showSuccessModal }> setShowSuccessModal( false ) }
+            <SuccessModal
+                show={ showSuccessModal }
+                onClose={ () => setShowSuccessModal( false ) }
                 texts={ texts }
             />
-            <PrivacyPolicyModal onClose="{" show="{" showPrivacyModal }>
+            <PrivacyPolicyModal
+                show={ showPrivacyModal }
+                onClose={ () =>
                 {
                     setShowPrivacyModal( false );
                     setSelectedPrivacyQuestion( null );
@@ -702,7 +714,9 @@ const Home = () =>
                 selectedQuestion={ selectedPrivacyQuestion }
                 texts={ texts }
             />
-            <TermsModal onClose="{" show="{" showTermsModal }> setShowTermsModal( false ) }
+            <TermsModal
+                show={ showTermsModal }
+                onClose={ () => setShowTermsModal( false ) }
                 texts={ texts }
             />
         </>
